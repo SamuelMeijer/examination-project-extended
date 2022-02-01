@@ -1,0 +1,60 @@
+.navContainer {
+    width: 100%;
+    height: 120px;
+
+    background-color: #FDE2C4;
+
+    display: flex;
+    justify-content: flex-end;
+}
+
+.navLinkContainer {
+    width: 550px;
+    height: 100%;
+    padding-left: 5px;
+    padding-right: 25px;
+
+    display: flex;
+    justify-content: flex-end;
+}
+
+.navLink {
+    width: 120px;
+    height: 120px;
+    margin: 0 5px;
+
+    font-size: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.navLinkNotActive {
+    text-decoration: none;
+}
+
+.navLinkIsActive {
+    text-decoration: underline;
+}
+
+.home {
+    background-color: #4C352F;
+    color: #FDE2C4
+}
+
+.game {
+    background-color: #FFC66C;
+    color: #4C352F
+}
+
+.shop {
+    background-color: #FF7F4A;
+    color: #4C352F
+}
+
+.profile {
+    background-color: #F78632;
+    color: #4C352F
+}

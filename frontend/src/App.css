@@ -1,3 +1,11 @@
+/* TODO: ADD mediaqueries */
+
 .App {
-  text-align: center;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1440px;
+  height: 100%;
+  min-height: 100vh;
+  /* TODO: Change/remove background-color */
+  background-color: coral;
 }
