@@ -1,27 +1,15 @@
 import React, { CSSProperties } from "react";
 import Styles from "./headerArt.module.css";
 import { useLocation } from "react-router-dom";
+import { colorDecider } from "../../../common/utils";
 
 export default function HeaderArt() {
   // Checking current pathname
   const location = useLocation().pathname;
 
-  // TODO: Move to separate component to make reusable for header?
-  let bgColorArr: string[] = [];
-  // Populating bgColorArr
-  switch (location) {
-    case "/game":
-      bgColorArr = ["#FFC66C", "#FF8632", "#FF7F4A"];
-      break;
-    case "/shop":
-      bgColorArr = ["#FF7F4A", "#FFC66C", "#FF8632"];
-      break;
-    default:
-      bgColorArr = ["#FF8632", "#FF7F4A", "#FFC66C"];
-      break;
-  }
+  // Dynamic backgroundColor depending on current pathname
+  const bgColorArr = colorDecider(location);
 
-  // Dynamic backgroundColor
   const backColor: CSSProperties = {
     backgroundColor: bgColorArr[0],
   };
