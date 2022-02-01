@@ -1,0 +1,28 @@
+.headerArtContainer {
+    width: 226px;
+    height: 240px;
+
+    display: grid;
+    grid-template-rows: [containerTop] 20px [rectMidTop] 12px [rectFrontTop] 18px [rectBackTop] 140px [rectBackBot] 25px [rectMidBot] 12px [rectFrontBot] 13px [containerBot];
+    grid-template-columns: [rectBackLeft] 26px [rectFrontLeft] 35px [rectMidLeft] 105px [rectFrontRight] 35px [rectMidRight] 25px [rectBackRight];
+}
+
+.rectangleBack{
+    grid-row: rectBackTop / rectBackBot;
+    grid-column: rectBackLeft / rectBackRight;
+
+    filter: drop-shadow(0 0.25rem 0.25rem rgba(0,0,0,0.25));
+}
+
+.rectangleMid {
+    grid-row: rectMidTop / rectMidBot;
+    grid-column: rectMidLeft / rectMidRight;
+
+    filter: drop-shadow(0 0.25rem 0.25rem rgba(0,0,0,0.25));
+}
+.rectangleFront {
+    grid-row: rectFrontTop / rectFrontBot;
+    grid-column: rectFrontLeft / rectFrontRight;
+
+    filter: drop-shadow(0 0.25rem 0.25rem rgba(0,0,0,0.25));
+}

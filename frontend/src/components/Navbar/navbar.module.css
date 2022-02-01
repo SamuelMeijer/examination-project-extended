@@ -29,6 +29,9 @@
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
+
+    /* TODO: FIX OVERLAPING SHADOW ON HEADER */
+    filter: drop-shadow(0 0.25rem 0.25rem rgba(0,0,0,0.25));
 }
 
 .navLinkNotActive {

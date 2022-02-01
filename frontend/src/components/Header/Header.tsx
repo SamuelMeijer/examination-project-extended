@@ -1,6 +1,11 @@
 import React from "react";
-import Styles from "header.module.css";
+import Styles from "./header.module.css";
+
+import HeaderArt from "./HeaderArt/HeaderArt";
 
 export default function Header() {
-  return <p>This is the HEADER</p>;
+  return (
+  <section className={Styles.headerContainer}>
+    <HeaderArt />
+  </section>);
 }
