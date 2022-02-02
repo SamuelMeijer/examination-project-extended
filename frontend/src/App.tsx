@@ -18,7 +18,7 @@ function App() {
       <Navbar />
       <Header />
 
-      <main>
+      <main className="mainContainer">
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<Home />} />

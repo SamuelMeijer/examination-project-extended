@@ -6,6 +6,12 @@
   max-width: 1440px;
   height: 100%;
   min-height: 100vh;
-  /* TODO: Change/remove background-color */
-  background-color: coral;
+}
+
+.mainContainer {
+  width: 100%;
+  max-width: 1248px;
+  height: 100%;
+  margin: 0 auto;
+  margin-bottom: 48px;
 }
