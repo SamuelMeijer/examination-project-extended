@@ -15,9 +15,16 @@
     align-items: center;
 }
 
+.contentBoxContainer h2 {
+    font-size: 40px;
+    font-weight: 700;
+    color: #4C352F;
+}
+
 .contentBoxContainer p {
     font-size: 1rem;
     padding: 0.5rem 0;
+    color: #4C352F;
 }
 
 .innerContentContainer {

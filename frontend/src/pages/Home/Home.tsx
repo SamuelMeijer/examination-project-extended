@@ -1,6 +1,8 @@
 import React from "react";
 import Styles from "./home.module.css";
 
+import StyledButton from "../../components/StyledButton/StyledButton";
+
 export default function Home() {
   return (
     <section className={Styles.contentContainer}>
@@ -44,7 +46,7 @@ export default function Home() {
             ipsum primis in faucibus orci luctus et ultrices posuere cubilia
             curae;
           </p>
-          <button>Bli Medlem</button>
+          <StyledButton textInput="Bli Medlem" colorInput="#F78632" />
           <div className={Styles.colorDivider} />
         </div>
       </section>
@@ -89,7 +91,7 @@ export default function Home() {
             ipsum primis in faucibus orci luctus et ultrices posuere cubilia
             curae;
           </p>
-          <button>Bli Medlem</button>
+          <StyledButton textInput="Spela 2048" colorInput="#FFC66C" />
           <div className={Styles.colorDivider} />
         </div>
       </section>
@@ -134,7 +136,7 @@ export default function Home() {
             ipsum primis in faucibus orci luctus et ultrices posuere cubilia
             curae;
           </p>
-          <button>Bli Medlem</button>
+          <StyledButton textInput="Visa Shop" colorInput="#FF7F4A" />
           <div className={Styles.colorDivider} />
         </div>
       </section>
