@@ -1,0 +1,191 @@
+.gameContentContainer {
+    width: 100%;
+    max-width: 1248px;
+    height: 1766px;
+
+    padding: 68px 0;
+
+    background-color: #FDE2C4;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.gameContentContainer h2 {
+    font-size: 40px;
+    font-weight: 700;
+
+    color: #4C352F;
+}
+
+.gameContentContainer p {
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    color: #4C352F;
+
+    text-align: center;
+}
+
+.colorDivider {
+    width: 100%;
+    max-width: 517px;
+    height: 50px;
+
+    background-color: #FFC66C;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.instructionsContainer {
+    width: 100%;
+    max-width: 517px;
+    height: 288px;
+
+    margin: 0 auto;
+
+
+    /* background-color: lightgreen; */
+}
+
+.gameContainer {
+    width: 100%;
+    max-width: 580px;
+    height: 758px;
+
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    /* background-color: lightsalmon; */
+}
+
+.scoreBoard {
+    width: 100%;
+    max-width: 517px;
+    height: 128px;
+
+    display: flex;
+}
+
+.scoreBoardPoints {
+    width: 50%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.scoreBoardPoints h3, .scoreBoardPoints p {
+    font-size: 2rem;
+    font-weight: 400;
+    color: #4C352F
+}
+
+.gameBoard {
+    width: 100%;
+    /* TODO: MAKE DYNAMIC WHEN WINDOW RESIZES */
+    height: 580px;
+
+    /* #4C352F in rgb */
+    background-color: rgba(76, 53, 47, 0.5);
+}
+
+.highscoreContainer {
+    width: 100%;
+    max-width: 517px;
+    height: 439px;
+
+    margin: 0 auto;
+}
+
+.playerHighscoreTitle {
+    width: 100%;
+    height: 50px;
+
+    font-size: 2rem;
+    font-weight: 400;
+
+    margin-top: 9px;
+
+    color: #4C352F;
+    text-align: center;
+}
+
+.playerHighscore {
+    width: 100%;
+    max-width: 517px;
+    height: 84px;
+
+    display: flex;
+}
+
+.highscoreListContainer {
+    width: 100%;
+    height: 246px;
+    max-width: 517px;
+}
+
+.highscoreList {
+    width: 100%;
+    height: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.highscoreList th {
+    font-size: 1.625rem;
+    font-weight: 400;
+}
+
+.highscoreList th:nth-child(1) {
+    width: 33%;
+    height: 46px;
+
+    text-align: left;
+}
+
+.highscoreList th:nth-child(2) {
+    width: 34%;
+    height: 46px;
+
+    /* #4C352F in rgb */
+    border-left: 5px solid rgba(76, 53, 47, 0.8);
+    border-right: 5px solid rgba(76, 53, 47, 0.8);
+
+    text-align: center;
+}
+
+.highscoreList th:nth-child(3) {
+    width: 33%;
+    height: 46px;
+
+    text-align: right;
+}
+
+.highscoreList td {
+    /* #4C352F in rgb */
+    border-top: 5px solid rgba(76, 53, 47, 0.8);   
+}
+
+.highscoreList td:nth-child(1) {
+    text-align: left;
+}
+
+.highscoreList td:nth-child(2) {
+    /* #4C352F in rgb */
+    border-left: 5px solid rgba(76, 53, 47, 0.8);
+    border-right: 5px solid rgba(76, 53, 47, 0.8);
+
+    text-align: center;
+}
+
+.highscoreList td:nth-child(3) {
+    text-align: right;
+}
