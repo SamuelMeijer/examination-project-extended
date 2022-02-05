@@ -1,0 +1,119 @@
+.profileContentContainer {
+    width: 100%;
+    max-width: 1248px;
+    height: 880px;
+
+    padding: 68px 0;
+
+    background-color: #FDE2C4;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.profileContentContainer h2 {
+    font-size: 40px;
+    font-weight: 700;
+
+    color: #4C352F;
+}
+
+.profileContentContainer p {
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    color: #4C352F;
+}
+
+.colorDivider {
+    width: 100%;
+    max-width: 517px;
+    height: 50px;
+
+    background-color: #F78632;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.userInformationContainer {
+    width: 100%;
+    max-width: 517px;
+    height: 340px;
+
+    margin: 0 auto;
+}
+
+.userInformationContent {
+    width: 100%;
+    height: 290px;
+
+    padding: 0.5rem 0;
+
+    display: flex;
+}
+
+.userInformationText {
+    width: calc(100% - 200px);
+    height: 100%;
+}
+
+.userPictureContainer {
+    width: 200px;
+    height: 180px;
+
+    padding: 20px 23px 6px 23px;
+
+    border: 2px solid #4C352F;
+
+    /* #E5E5E5 in rgb */
+    background-color: rgba(229, 229, 229, 0.4);
+}
+
+.supportContainer {
+    width: 100%;
+    max-width: 517px;
+    height: 404px;
+
+    margin: 0 auto;
+}
+
+.supportContainer h3 {
+    padding: 15px 0;
+
+    font-size: 1.625rem;
+    font-weight: 400;
+    text-align: center;
+}
+
+.changePasswordContainer {
+    width: 100%;
+    height: 354px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.changePasswordForm {
+    width: 100%;
+    height: 192px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.changePasswordForm label {
+    width: auto;
+    height: 20px;
+}
+
+.changePasswordForm input {
+    width: 220px;
+    height: 20px;
+    border: 1px solid #4C352F;
+
+    margin-bottom: 0.5rem;
+}
