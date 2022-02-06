@@ -83,13 +83,13 @@
     color: #4C352F
 }
 
-.gameBoard {
+.gameBoardContainer {
     width: 100%;
     /* TODO: MAKE DYNAMIC WHEN WINDOW RESIZES */
     height: 580px;
 
     /* #4C352F in rgb */
-    background-color: rgba(76, 53, 47, 0.5);
+    /* background-color: rgba(76, 53, 47, 0.5); */
 }
 
 .highscoreContainer {

@@ -1,0 +1,11 @@
+.gameGrid {
+    width: 580px;
+    height: 580px;
+    position: relative;
+
+    /* #4C352F in rgb */
+    background-color: rgba(76, 53, 47, 0.5);
+
+    display: flex;
+    flex-wrap: wrap;
+}

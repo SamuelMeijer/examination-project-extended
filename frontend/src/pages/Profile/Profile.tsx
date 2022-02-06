@@ -4,6 +4,8 @@ import Styles from "./profile.module.css";
 import { FaUserAstronaut } from "react-icons/fa";
 import StyledButton from "../../components/StyledButton/StyledButton";
 
+
+// TODO: Add logic for user being logged in or not
 export default function Profile() {
   return (
     <section className={Styles.profileContentContainer}>

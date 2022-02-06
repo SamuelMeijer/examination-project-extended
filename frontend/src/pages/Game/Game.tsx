@@ -1,6 +1,8 @@
 import React from "react";
 import Styles from "./game.module.css";
 
+import Game2048 from "../../components/Game2048/Game2048";
+
 export default function Game() {
   return (
     <section className={Styles.gameContentContainer}>
@@ -38,8 +40,8 @@ export default function Game() {
             <p>0</p>
           </div>
         </div>
-        <div className={Styles.gameBoard}>
-          {/* TODO: Add bricks */}
+        <div className={Styles.gameBoardContainer}>
+          <Game2048 />
         </div>
       </div>
 
