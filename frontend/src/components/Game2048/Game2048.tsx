@@ -78,7 +78,6 @@ export default function Game2048() {
     }
 
     if (gameIsRunning) {
-      // TODO CHANGE
       setTileList(updatedTileList);
     }
   };
@@ -115,6 +114,66 @@ export default function Game2048() {
     }
   };
 
+  const moveDown = (): void => {
+    const updatedTileList = [...tileList];
+
+    for (let i = 0; i < 4; i++) {
+        let columnValues = [
+            updatedTileList[i].value,
+            updatedTileList[i + 4].value,
+            updatedTileList[i + 8].value,
+            updatedTileList[i + 12].value,
+        ];
+
+        let columnValuesGreaterThanZero = columnValues.filter((num) => num > 0);
+
+        let zeroesNeeded = 4 - columnValuesGreaterThanZero.length;
+        let arrOfZeroes = Array(zeroesNeeded).fill(0);
+
+        // Combine the arrays (ONLY DIFFERENCCE BETWEEN LEFT OR RIGHT)
+        let arrAfterMovement = arrOfZeroes.concat(columnValuesGreaterThanZero);
+
+        updatedTileList[i].value = arrAfterMovement[0];
+        updatedTileList[i + 4].value = arrAfterMovement[1];
+        updatedTileList[i + 8].value = arrAfterMovement[2];
+        updatedTileList[i + 12].value = arrAfterMovement[3];
+    }
+
+    if (gameIsRunning) {
+      setTileList(updatedTileList);
+    }
+  };
+
+  const moveUp = (): void => {
+    const updatedTileList = [...tileList];
+
+    for (let i = 0; i < 4; i++) {
+        let columnValues = [
+            updatedTileList[i].value,
+            updatedTileList[i + 4].value,
+            updatedTileList[i + 8].value,
+            updatedTileList[i + 12].value,
+        ];
+
+        let columnValuesGreaterThanZero = columnValues.filter((num) => num > 0);
+
+        let zeroesNeeded = 4 - columnValuesGreaterThanZero.length;
+        let arrOfZeroes = Array(zeroesNeeded).fill(0);
+
+        // Combine the arrays (ONLY DIFFERENCCE BETWEEN LEFT OR RIGHT)
+        let arrAfterMovement = columnValuesGreaterThanZero.concat(arrOfZeroes);
+
+        updatedTileList[i].value = arrAfterMovement[0];
+        updatedTileList[i + 4].value = arrAfterMovement[1];
+        updatedTileList[i + 8].value = arrAfterMovement[2];
+        updatedTileList[i + 12].value = arrAfterMovement[3];
+    }
+
+    if (gameIsRunning) {
+      setTileList(updatedTileList);
+    }
+  };
+
   const combineNumbersInRow = () => {
     const updatedTileList = [...tileList];
     
@@ -129,6 +188,21 @@ export default function Game2048() {
 
     setTileList(updatedTileList)
     }
+
+    const combineNumbersInColumn = () => {
+        const updatedTileList = [...tileList];
+        
+        for (let i = 0; i < 12; i++) {
+            if (updatedTileList[i].value === updatedTileList[i + 4].value) {
+              // Combine the total value and update the value of a tile
+              updatedTileList[i].value =+ updatedTileList[i].value + updatedTileList[i + 4].value
+              // Set the value to 0 to make it a blank tile
+              updatedTileList[i + 4].value = 0
+            }
+        }
+    
+        setTileList(updatedTileList)
+        }
 
     const handleKeyUp = (event: KeyboardEvent) => {
         // TODO: Fix so that the windows doesnt scroll or change keys from arrowkeys
@@ -147,6 +221,20 @@ export default function Game2048() {
             moveLeft()
             combineNumbersInRow()
             moveLeft()
+            generateNewValueTile()
+        }
+
+        if (event.key === 'ArrowDown' || event.key === "s" || event.key ==="S") {
+            moveDown()
+            combineNumbersInColumn()
+            moveDown()
+            generateNewValueTile()
+        }
+
+        if (event.key === 'ArrowUp' || event.key === "w" || event.key ==="W") {
+            moveUp()
+            combineNumbersInColumn()
+            moveUp()
             generateNewValueTile()
         }
     }
