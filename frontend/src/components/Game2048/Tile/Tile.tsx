@@ -1,17 +1,9 @@
 import React, { CSSProperties } from 'react';
 
+import { TileInterface } from './models/Tile';
 import Styles from './tile.module.css'
 
-interface tileProps {
-    // The tiles value: 0, 2, 4 ... 2048
-    value: number,
-    // The tiles horistontal position: 0-3
-    positionX: number,
-    // The tiles vertical position: 0-3
-    positionY: number
-}
-
-export default function Tile ({value, positionX, positionY}: tileProps) {
+export default function Tile ({value, positionX, positionY}: TileInterface) {
     
     const dynamicPositioning = (position:number): number => {
         return 20 + (120 * position) + (20 * position)
@@ -25,7 +17,7 @@ export default function Tile ({value, positionX, positionY}: tileProps) {
 
     return (
         <div className={Styles.tile} style={tileStyle}>
-            <p>{value}</p>
+            <p>{value > 0 ? value : ''}</p>
         </div>
     )
 }
