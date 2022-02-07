@@ -46,6 +46,78 @@ export default function Game2048() {
     setTileList(newArr);
   };
 
+  /* TODO: MOVE GAMELOGIC TO DIFFERENT FILE! */
+  const moveRight = (): void => {
+    const updatedTileList = [...tileList];
+
+    for (let i = 0; i < tileList.length; i++) {
+      if (i % 4 === 0) {
+        let rowValues = [
+          tileList[i].value,
+          tileList[i + 1].value,
+          tileList[i + 2].value,
+          tileList[i + 3].value,
+        ];
+
+        let rowValuesGreaterThanZero = rowValues.filter((num) => num > 0);
+        console.log(rowValuesGreaterThanZero);
+
+        let zeroesNeeded = 4 - rowValuesGreaterThanZero.length;
+        let arrOfZeroes = Array(zeroesNeeded).fill(0);
+        console.log(arrOfZeroes);
+
+        // Combine the arrays (ONLY DIFFERENCCE BETWEEN LEFT OR RIGHT)
+        let arrAfterMovement = arrOfZeroes.concat(rowValuesGreaterThanZero);
+        console.log("SE", arrAfterMovement);
+
+        updatedTileList[i].value = arrAfterMovement[0];
+        updatedTileList[i + 1].value = arrAfterMovement[1];
+        updatedTileList[i + 2].value = arrAfterMovement[2];
+        updatedTileList[i + 3].value = arrAfterMovement[3];
+      }
+    }
+
+    if (gameIsRunning) {
+      // TODO CHANGE
+      setTileList(updatedTileList);
+    }
+  };
+
+  const moveLeft = (): void => {
+    const updatedTileList = [...tileList];
+
+    for (let i = 0; i < tileList.length; i++) {
+      if (i % 4 === 0) {
+        let rowValues = [
+          tileList[i].value,
+          tileList[i + 1].value,
+          tileList[i + 2].value,
+          tileList[i + 3].value,
+        ];
+
+        let rowValuesGreaterThanZero = rowValues.filter((num) => num > 0);
+        console.log(rowValuesGreaterThanZero);
+
+        let zeroesNeeded = 4 - rowValuesGreaterThanZero.length;
+        let arrOfZeroes = Array(zeroesNeeded).fill(0);
+        console.log(arrOfZeroes);
+
+        // Combine the arrays (ONLY DIFFERENCCE BETWEEN LEFT OR RIGHT)
+        let arrAfterMovement = rowValuesGreaterThanZero.concat(arrOfZeroes);
+        console.log("SE", arrAfterMovement);
+
+        updatedTileList[i].value = arrAfterMovement[0];
+        updatedTileList[i + 1].value = arrAfterMovement[1];
+        updatedTileList[i + 2].value = arrAfterMovement[2];
+        updatedTileList[i + 3].value = arrAfterMovement[3];
+      }
+    }
+
+    if (gameIsRunning) {
+      setTileList(updatedTileList);
+    }
+  };
+
   useEffect(() => {
     if (tileList.length === 16) {
       /* Changing the value of two tiles to 2 before starting */
@@ -59,7 +131,8 @@ export default function Game2048() {
   }, [tileList.length]);
 
   return (
-    <div className={Styles.gameGrid}>
+    //   TODO: Change to handleKeyPress-function - Testing moveLeft
+    <div className={Styles.gameGrid} onClick={moveLeft}>
       {!gameIsRunning ? (
         //TODO: REPLACE WITH <StyledButton textInput="Spela" colorInput="#FFC66C" onClick={startNewGame}/>
         <button value="Spela" onClick={startNewGame}>
