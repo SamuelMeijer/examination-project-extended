@@ -23,10 +23,13 @@ export default function Game2048() {
   const generateNewValueTile = (): void => {
     // TODO: Add check to see if all tiles have a value > 0
 
+    const updatedTileList = [...tileList]
     const randomNumber = Math.floor(Math.random() * tileList.length);
 
-    if (tileList[randomNumber].value === 0) {
-      tileList[randomNumber].value = 2;
+    if (updatedTileList[randomNumber].value === 0) {
+        updatedTileList[randomNumber].value = 2;
+
+        setTileList(updatedTileList)
     } else generateNewValueTile();
   };
 
@@ -60,15 +63,12 @@ export default function Game2048() {
         ];
 
         let rowValuesGreaterThanZero = rowValues.filter((num) => num > 0);
-        console.log(rowValuesGreaterThanZero);
 
         let zeroesNeeded = 4 - rowValuesGreaterThanZero.length;
         let arrOfZeroes = Array(zeroesNeeded).fill(0);
-        console.log(arrOfZeroes);
 
         // Combine the arrays (ONLY DIFFERENCCE BETWEEN LEFT OR RIGHT)
         let arrAfterMovement = arrOfZeroes.concat(rowValuesGreaterThanZero);
-        console.log("SE", arrAfterMovement);
 
         updatedTileList[i].value = arrAfterMovement[0];
         updatedTileList[i + 1].value = arrAfterMovement[1];
@@ -96,15 +96,12 @@ export default function Game2048() {
         ];
 
         let rowValuesGreaterThanZero = rowValues.filter((num) => num > 0);
-        console.log(rowValuesGreaterThanZero);
 
         let zeroesNeeded = 4 - rowValuesGreaterThanZero.length;
         let arrOfZeroes = Array(zeroesNeeded).fill(0);
-        console.log(arrOfZeroes);
 
         // Combine the arrays (ONLY DIFFERENCCE BETWEEN LEFT OR RIGHT)
         let arrAfterMovement = rowValuesGreaterThanZero.concat(arrOfZeroes);
-        console.log("SE", arrAfterMovement);
 
         updatedTileList[i].value = arrAfterMovement[0];
         updatedTileList[i + 1].value = arrAfterMovement[1];
@@ -118,21 +115,59 @@ export default function Game2048() {
     }
   };
 
+  const combineNumbersInRow = () => {
+    const updatedTileList = [...tileList];
+    
+    for (let i = 0; i < (tileList.length - 1); i++) {
+        if (updatedTileList[i].value === updatedTileList[i + 1].value) {
+          // Combine the total value and update the value of a tile
+          updatedTileList[i].value =+ updatedTileList[i].value + updatedTileList[i + 1].value
+          // Set the value to 0 to make it a blank tile
+          updatedTileList[i + 1].value = 0
+        }
+    }
+
+    setTileList(updatedTileList)
+    }
+
+    const handleKeyUp = (event: KeyboardEvent) => {
+        // TODO: Fix so that the windows doesnt scroll or change keys from arrowkeys
+        event.preventDefault()
+        
+        // TODO: Update score + moves with every correct move
+
+        if (event.key === 'ArrowRight' || event.key === "d" || event.key ==="D") {
+            moveRight()
+            combineNumbersInRow()
+            moveRight()
+            generateNewValueTile()
+        }
+
+        if (event.key === 'ArrowLeft' || event.key === "a" || event.key ==="A") {
+            moveLeft()
+            combineNumbersInRow()
+            moveLeft()
+            generateNewValueTile()
+        }
+    }
+
+
   useEffect(() => {
-    if (tileList.length === 16) {
-      /* Changing the value of two tiles to 2 before starting */
+    if (tileList.length === 16 && !gameIsRunning) {
+    /* Changing the value of two tiles to 2 before starting */
       generateNewValueTile();
       generateNewValueTile();
 
       setGameIsRunning(true);
-    }
+      // Adding eventListener so that the player can play with their keyboard
+      window.addEventListener('keyup', handleKeyUp)
 
+      }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tileList.length]);
+  }, [tileList]);
 
   return (
-    //   TODO: Change to handleKeyPress-function - Testing moveLeft
-    <div className={Styles.gameGrid} onClick={moveLeft}>
+    <div className={Styles.gameGrid}>
       {!gameIsRunning ? (
         //TODO: REPLACE WITH <StyledButton textInput="Spela" colorInput="#FFC66C" onClick={startNewGame}/>
         <button value="Spela" onClick={startNewGame}>
