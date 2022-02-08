@@ -22,7 +22,7 @@ export const moveHorizontal = (
       let zeroesNeeded = 4 - rowValuesGreaterThanZero.length;
       let arrOfZeroes = Array(zeroesNeeded).fill(0);
 
-      // Combine the arrays (ONLY DIFFERENCCE BETWEEN LEFT OR RIGHT)
+      // Combine the arrays depending on direction
       let arrAfterMovement = [];
       switch (direction) {
         case "Right":
@@ -66,7 +66,7 @@ export const moveVertical = (
     let zeroesNeeded = 4 - columnValuesGreaterThanZero.length;
     let arrOfZeroes = Array(zeroesNeeded).fill(0);
 
-    // Combine the arrays (ONLY DIFFERENCCE BETWEEN LEFT OR RIGHT)
+    // Combine the arrays depending on direction
     let arrAfterMovement = [];
     switch (direction) {
       case "Up":
@@ -94,17 +94,26 @@ export const combineNumbersInRow = (
 ) => {
   const updatedTileList = [...tileList];
 
+  // Keeping track of the total value of merged tiles
+  let mergedTileValue = 0
+
   for (let i = 0; i < tileList.length - 1; i++) {
-    if (updatedTileList[i].value === updatedTileList[i + 1].value) {
+    if (updatedTileList[i].value === updatedTileList[i + 1].value && updatedTileList[i].value !== 0) {
       // Combine the total value and update the value of a tile
-      updatedTileList[i].value =
-        +updatedTileList[i].value + updatedTileList[i + 1].value;
+      updatedTileList[i].value += updatedTileList[i + 1].value;
       // Set the value to 0 to make it a blank tile
       updatedTileList[i + 1].value = 0;
-    }
+
+      // Updating value of merged tiles
+      mergedTileValue += updatedTileList[i].value
+    } 
   }
 
   setTileList(updatedTileList);
+
+  // TODO: Add scoreboard dispatch!
+  // Returning to enable updating scoreboard
+  return mergedTileValue
 };
 
 export const combineNumbersInColumn = (
@@ -113,17 +122,27 @@ export const combineNumbersInColumn = (
 ) => {
   const updatedTileList = [...tileList];
 
+  // Keeping track of the total value of merged tiles
+  let mergedTileValue = 0
+
   for (let i = 0; i < 12; i++) {
-    if (updatedTileList[i].value === updatedTileList[i + 4].value) {
+    if (updatedTileList[i].value === updatedTileList[i + 4].value && updatedTileList[i].value !== 0) {
       // Combine the total value and update the value of a tile
-      updatedTileList[i].value =
-        +updatedTileList[i].value + updatedTileList[i + 4].value;
+      updatedTileList[i].value += updatedTileList[i + 4].value;
       // Set the value to 0 to make it a blank tile
       updatedTileList[i + 4].value = 0;
+
+      // Updating value of merged tiles
+      mergedTileValue += updatedTileList[i].value
     }
   }
 
+
   setTileList(updatedTileList);
+
+  // TODO: Add scoreboard dispatch!
+  // Returning to enable updating scoreboard
+  return mergedTileValue
 };
 
 // Generates a new tile with the value 2 on an empty slot (tile with value = 0).
@@ -131,7 +150,7 @@ export const generateNewValueTile = (
   tileList: TileInterface[],
   setTileList: Function
 ): void => {
-  // TODO: Add check to see if all tiles have a value > 0
+  // TODO: Add check to see if all tiles have a value > 0 => Game is lost!
 
   const updatedTileList = [...tileList];
   const randomNumber = Math.floor(Math.random() * tileList.length);

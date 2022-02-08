@@ -30,16 +30,6 @@ export default function Game() {
         <div className={Styles.colorDivider}>
           <h2>2048</h2>
         </div>
-        <div className={Styles.scoreBoard}>
-          <div className={Styles.scoreBoardPoints}>
-            <h3>Poäng</h3>
-            <p>0</p>
-          </div>
-          <div className={Styles.scoreBoardPoints}>
-            <h3>Drag</h3>
-            <p>0</p>
-          </div>
-        </div>
         <div className={Styles.gameBoardContainer}>
           <Game2048 />
         </div>
