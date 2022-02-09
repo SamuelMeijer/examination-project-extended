@@ -46,7 +46,7 @@ export default function Home() {
             ipsum primis in faucibus orci luctus et ultrices posuere cubilia
             curae;
           </p>
-          <StyledButton textInput="Bli Medlem" colorInput="#F78632" />
+          <StyledButton textInput="Bli Medlem" colorInput="#F78632" pathName="profile"/>
           <div className={Styles.colorDivider} />
         </div>
       </section>
@@ -91,7 +91,7 @@ export default function Home() {
             ipsum primis in faucibus orci luctus et ultrices posuere cubilia
             curae;
           </p>
-          <StyledButton textInput="Spela 2048" colorInput="#FFC66C" />
+          <StyledButton textInput="Spela 2048" colorInput="#FFC66C" pathName="game"/>
           <div className={Styles.colorDivider} />
         </div>
       </section>
@@ -136,7 +136,7 @@ export default function Home() {
             ipsum primis in faucibus orci luctus et ultrices posuere cubilia
             curae;
           </p>
-          <StyledButton textInput="Visa Shop" colorInput="#FF7F4A" />
+          <StyledButton textInput="Visa Shop" colorInput="#FF7F4A" pathName="shop" />
           <div className={Styles.colorDivider} />
         </div>
       </section>
