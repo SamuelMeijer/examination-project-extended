@@ -58,8 +58,9 @@
 }
 
 .preGameContainer h3 {
-    font-size: 26px;
+    font-size: 1.625rem;
     color: #4C352F;
+    margin-bottom: 2rem;
 }
 
 /* TODO: REMOVE WHEN REPLACING WITH StyledButton (SAME STYLING) */
@@ -70,6 +71,7 @@
     border-radius: 20px;
 
     background-color: #4C352F;
+    color: #FFC66C;
 
     font-family: 'Montserrat', sans-serif;
     font-size: 2rem;

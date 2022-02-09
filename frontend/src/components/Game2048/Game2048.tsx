@@ -3,7 +3,6 @@ import Styles from "./game2048.module.css";
 
 // Importing components
 import Tile from "./Tile/Tile";
-import StyledButton from "../StyledButton/StyledButton";
 // Importing models
 import { TileInterface } from "./Tile/models/Tile";
 // Importing utils
@@ -156,7 +155,6 @@ export default function Game2048() {
         {!gameStatusRef.current.isRunning ? (
           <div className={Styles.preGameContainer}> 
             <h3>{gameStatusRef.current.message}</h3>
-            {/* TODO: REPLACE WITH <StyledButton textInput="Spela" colorInput="#FFC66C" onClick={startNewGame}/> */}
             <button value={gameStatusRef.current.message === 'Starta ett nytt spel' ? "Spela" : "Spela igen"} onClick={handleOnClick}>
               {gameStatusRef.current.message === 'Starta ett nytt spel' ? "Spela" : "Spela igen"}
             </button>
