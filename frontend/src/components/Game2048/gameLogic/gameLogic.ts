@@ -95,25 +95,28 @@ export const combineNumbersInRow = (
   const updatedTileList = [...tileList];
 
   // Keeping track of the total value of merged tiles
-  let mergedTileValue = 0
+  let mergedTileValue = 0;
 
   for (let i = 0; i < tileList.length - 1; i++) {
-    if (updatedTileList[i].value === updatedTileList[i + 1].value && updatedTileList[i].value !== 0) {
+    if (
+      updatedTileList[i].value === updatedTileList[i + 1].value &&
+      updatedTileList[i].value !== 0
+    ) {
       // Combine the total value and update the value of a tile
       updatedTileList[i].value += updatedTileList[i + 1].value;
       // Set the value to 0 to make it a blank tile
       updatedTileList[i + 1].value = 0;
 
       // Updating value of merged tiles
-      mergedTileValue += updatedTileList[i].value
-    } 
+      mergedTileValue += updatedTileList[i].value;
+    }
   }
 
   setTileList(updatedTileList);
 
   // TODO: Add scoreboard dispatch!
   // Returning to enable updating scoreboard
-  return mergedTileValue
+  return mergedTileValue;
 };
 
 export const combineNumbersInColumn = (
@@ -123,26 +126,28 @@ export const combineNumbersInColumn = (
   const updatedTileList = [...tileList];
 
   // Keeping track of the total value of merged tiles
-  let mergedTileValue = 0
+  let mergedTileValue = 0;
 
   for (let i = 0; i < 12; i++) {
-    if (updatedTileList[i].value === updatedTileList[i + 4].value && updatedTileList[i].value !== 0) {
+    if (
+      updatedTileList[i].value === updatedTileList[i + 4].value &&
+      updatedTileList[i].value !== 0
+    ) {
       // Combine the total value and update the value of a tile
       updatedTileList[i].value += updatedTileList[i + 4].value;
       // Set the value to 0 to make it a blank tile
       updatedTileList[i + 4].value = 0;
 
       // Updating value of merged tiles
-      mergedTileValue += updatedTileList[i].value
+      mergedTileValue += updatedTileList[i].value;
     }
   }
-
 
   setTileList(updatedTileList);
 
   // TODO: Add scoreboard dispatch!
   // Returning to enable updating scoreboard
-  return mergedTileValue
+  return mergedTileValue;
 };
 
 // Generates a new tile with the value 2 on an empty slot (tile with value = 0).

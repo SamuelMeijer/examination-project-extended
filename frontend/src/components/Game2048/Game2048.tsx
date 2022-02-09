@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useRef } from "react";
 import Styles from "./game2048.module.css";
 
 // Importing components
@@ -16,11 +16,14 @@ import {
 } from "./gameLogic/gameLogic";
 
 // TODO: Move scoreboard reducer and interface!
-type ACTIONTYPE =
+type SCOREBOARD_ACTIONTYPE =
   | { type: "update"; payload: number }
-  | { type: "reset"; payload: number };
+  | { type: "reset" };
 
-function scoreBoardReducer(state: ScoreBoardInterface, action: ACTIONTYPE) {
+function scoreBoardReducer(
+  state: ScoreBoardInterface,
+  action: SCOREBOARD_ACTIONTYPE
+) {
   switch (action.type) {
     case "update":
       return { score: state.score + action.payload, moves: state.moves++ };
@@ -38,20 +41,33 @@ interface ScoreBoardInterface {
 
 // TODO: Add logic for user being logged in or not
 export default function Game2048() {
-  const [gameIsRunning, setGameIsRunning] = useState(false);
-  const [tileList, setTileList] = useState<TileInterface[]>([]);
+  const [gameIsRunning, _setGameIsRunning] = useState(false);
+  const [tileList, _setTileList] = useState<TileInterface[]>([]);
 
   const initialScoreBoardState: ScoreBoardInterface = { score: 0, moves: 0 };
-  const [scoreBoard, dispatch] = useReducer(
+  const [scoreBoard, scoreBoardDispatch] = useReducer(
     scoreBoardReducer,
     initialScoreBoardState
   );
+
+  // Using useRef to make eventlistener able to access current value of states
+  const gameIsRunningRef = useRef(gameIsRunning);
+  const setGameIsRunning = (data: boolean) => {
+    gameIsRunningRef.current = data;
+    _setGameIsRunning(data);
+  };
+
+  const tileListRef = useRef(tileList);
+  const setTileList = (data: TileInterface[]) => {
+    tileListRef.current = data;
+    _setTileList(data);
+  };
 
   const startNewGame = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.preventDefault();
 
     // Populating the tileList
-    const newArr = [];
+    const newArr: TileInterface[] = [];
 
     for (let i = 0; i < 4; i++) {
       newArr.push({ value: 0, positionX: 0, positionY: i });
@@ -60,84 +76,143 @@ export default function Game2048() {
       newArr.push({ value: 0, positionX: 3, positionY: i });
     }
 
-    setTileList(newArr);
+    generateNewValueTile(newArr, setTileList);
+    generateNewValueTile(newArr, setTileList);
+    setGameIsRunning(true);
+    scoreBoardDispatch({ type: "reset" });
   };
 
   const updateScoreBoard = (newScore: number): void => {
-    dispatch({ type: "update", payload: newScore });
+    scoreBoardDispatch({ type: "update", payload: newScore });
   };
 
-  const handleKeyUp = (event: KeyboardEvent) => {
+  const checkIfWon = () => {
+    const playerWon = tileListRef.current.some((tile) => tile.value === 2048);
+
+    if (playerWon) {
+      setGameIsRunning(false);
+    }
+  };
+
+  const checkIfLost = () => {
+    const notLost = tileListRef.current.find((element) => element.value === 0);
+
+    if (!notLost) {
+      setGameIsRunning(false);
+    }
+  };
+
+  const handleKeyUp = function (event: KeyboardEvent) {
     // TODO: Fix so that the windows doesnt scroll or change keys from arrowkeys
     event.preventDefault();
 
-    let newScore = 0;
+    // Prevent event from running if game is not active
+    if (gameIsRunningRef.current) {
+      let newScore = 0;
+      /* 
+    1- Move all tiles to the DIRECTION side of the board
+    2- Check for possible merges
+    3- Update scoreboard
+    4- Check if the player won
+    5- Move all tiles to the DIRECTION side of the board after merges
+    6- Generate a new tile on an empty slot
+    */
 
-    if (event.key === "ArrowRight" || event.key === "d" || event.key === "D") {
-      // Move all tiles to the right side of the board
-      moveHorizontal("Right", tileList, setTileList, gameIsRunning);
-      // Check for possible merges
-      newScore = combineNumbersInRow(tileList, setTileList);
-      // Update scoreboard
-      updateScoreBoard(newScore);
-      // Move all tiles to the right side of the board after merges
-      moveHorizontal("Right", tileList, setTileList, gameIsRunning);
-      // Generate a new tile on an empty slot
-      generateNewValueTile(tileList, setTileList);
-    }
+      if (
+        event.key === "ArrowRight" ||
+        event.key === "d" ||
+        event.key === "D"
+      ) {
+        moveHorizontal(
+          "Right",
+          tileListRef.current,
+          setTileList,
+          gameIsRunningRef.current
+        );
+        newScore = combineNumbersInRow(tileListRef.current, setTileList);
+        updateScoreBoard(newScore);
+        checkIfWon();
+        moveHorizontal(
+          "Right",
+          tileListRef.current,
+          setTileList,
+          gameIsRunningRef.current
+        );
+        checkIfLost();
+        generateNewValueTile(tileListRef.current, setTileList);
+      }
 
-    if (event.key === "ArrowLeft" || event.key === "a" || event.key === "A") {
-      // Move all tiles to the left side of the board
-      moveHorizontal("Left", tileList, setTileList, gameIsRunning);
-      // Check for possible merges
-      newScore = combineNumbersInRow(tileList, setTileList);
-      // Update scoreboard
-      updateScoreBoard(newScore);
-      // Move all tiles to the left side of the board after merges
-      moveHorizontal("Left", tileList, setTileList, gameIsRunning);
-      // Generate a new tile on an empty slot
-      generateNewValueTile(tileList, setTileList);
-    }
+      if (event.key === "ArrowLeft" || event.key === "a" || event.key === "A") {
+        moveHorizontal(
+          "Left",
+          tileListRef.current,
+          setTileList,
+          gameIsRunningRef.current
+        );
+        newScore = combineNumbersInRow(tileListRef.current, setTileList);
+        updateScoreBoard(newScore);
+        checkIfWon();
+        moveHorizontal(
+          "Left",
+          tileListRef.current,
+          setTileList,
+          gameIsRunningRef.current
+        );
+        checkIfLost();
+        generateNewValueTile(tileListRef.current, setTileList);
+      }
 
-    if (event.key === "ArrowDown" || event.key === "s" || event.key === "S") {
-      // Move all tiles to the bottom side of the board
-      moveVertical("Down", tileList, setTileList, gameIsRunning);
-      // Check for possible merges
-      newScore = combineNumbersInColumn(tileList, setTileList);
-      // Update scoreboard
-      updateScoreBoard(newScore);
-      // Move all tiles to the bottom side of the board after merges
-      moveVertical("Down", tileList, setTileList, gameIsRunning);
-      // Generate a new tile on an empty slot
-      generateNewValueTile(tileList, setTileList);
-    }
+      if (event.key === "ArrowDown" || event.key === "s" || event.key === "S") {
+        moveVertical(
+          "Down",
+          tileListRef.current,
+          setTileList,
+          gameIsRunningRef.current
+        );
+        newScore = combineNumbersInColumn(tileListRef.current, setTileList);
+        updateScoreBoard(newScore);
+        checkIfWon();
+        moveVertical(
+          "Down",
+          tileListRef.current,
+          setTileList,
+          gameIsRunningRef.current
+        );
+        checkIfLost();
+        generateNewValueTile(tileListRef.current, setTileList);
+      }
 
-    if (event.key === "ArrowUp" || event.key === "w" || event.key === "W") {
-      // Move all tiles to the top side of the board
-      moveVertical("Up", tileList, setTileList, gameIsRunning);
-      // Check for possible merges
-      newScore = combineNumbersInColumn(tileList, setTileList);
-      // Update scoreboard
-      updateScoreBoard(newScore);
-      // Move all tiles to the top side of the board
-      moveVertical("Up", tileList, setTileList, gameIsRunning);
-      // Generate a new tile on an empty slot
-      generateNewValueTile(tileList, setTileList);
+      if (event.key === "ArrowUp" || event.key === "w" || event.key === "W") {
+        moveVertical(
+          "Up",
+          tileListRef.current,
+          setTileList,
+          gameIsRunningRef.current
+        );
+        newScore = combineNumbersInColumn(tileListRef.current, setTileList);
+        updateScoreBoard(newScore);
+        checkIfWon();
+        moveVertical(
+          "Up",
+          tileListRef.current,
+          setTileList,
+          gameIsRunningRef.current
+        );
+        checkIfLost();
+        generateNewValueTile(tileListRef.current, setTileList);
+      }
     }
   };
 
   useEffect(() => {
-    if (tileList.length === 16 && !gameIsRunning) {
-      /* Changing the value of two tiles to 2 before starting */
-      generateNewValueTile(tileList, setTileList);
-      generateNewValueTile(tileList, setTileList);
-
-      setGameIsRunning(true);
-      // Adding eventListener so that the player can play with their keyboard
-      window.addEventListener("keyup", handleKeyUp);
+    if (gameIsRunning) {
+      window.addEventListener("keyup", handleKeyUp, true);
+    } else {
+      // Currently not working -> Stoping event from executing instead.
+      window.removeEventListener("keyup", handleKeyUp, true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tileList.length]);
+  }, [gameIsRunningRef]);
 
   return (
     <div className={Styles.gameContainer}>
