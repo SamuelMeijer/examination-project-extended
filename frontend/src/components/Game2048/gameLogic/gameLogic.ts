@@ -1,11 +1,13 @@
 import { TileInterface } from "../Tile/models/Tile";
+import { gameStatusInterface } from "../Game2048";
+
 
 export const handleMovement = (
   direction: string,
   tileList: TileInterface[],
   setTileList: Function,
-  gameIsRunning: boolean,
-  setGameIsRunning: Function,
+  gameStatus: gameStatusInterface,
+  setGameStatus: Function,
   scoreBoardDispatch: Function
 ) => {
   let newScore = 0;
@@ -14,10 +16,10 @@ export const handleMovement = (
     2- Check for possible merges
   */
   if (direction === "Right" || direction === "Left") {
-    moveHorizontal(direction, tileList, setTileList, gameIsRunning);
+    moveHorizontal(direction, tileList, setTileList, gameStatus);
     newScore = combineNumbersInRow(tileList, setTileList);
   } else if (direction === "Up" || direction === "Down") {
-    moveVertical(direction, tileList, setTileList, gameIsRunning);
+    moveVertical(direction, tileList, setTileList, gameStatus);
     newScore = combineNumbersInColumn(tileList, setTileList);
   }
   /* 
@@ -25,20 +27,20 @@ export const handleMovement = (
     4- Check if the player won 
   */
   updateScoreBoard(newScore, scoreBoardDispatch);
-  checkIfWon(tileList, setGameIsRunning);
+  checkIfWon(tileList, setGameStatus);
   /* 
     5- Move all tiles to the DIRECTION side of the board after merges
   */
   if (direction === "Right" || direction === "Left") {
-    moveHorizontal(direction, tileList, setTileList, gameIsRunning);
+    moveHorizontal(direction, tileList, setTileList, gameStatus);
   } else if (direction === "Up" || direction === "Down") {
-    moveVertical(direction, tileList, setTileList, gameIsRunning);
+    moveVertical(direction, tileList, setTileList, gameStatus);
   }
   /* 
     6- Check if the player lost
     7- Generate a new tile on an empty slot (if player did not lose)
   */
-  let isLost = checkIfLost(tileList, setGameIsRunning);
+  let isLost = checkIfLost(tileList, setGameStatus);
 
   if (!isLost) {
     generateNewValueTile(tileList, setTileList);
@@ -48,7 +50,7 @@ export const handleMovement = (
 export const startNewGame = (
   setTileList: Function,
   scoreBoardDispatch: Function,
-  setGameIsRunning: Function
+  setGameStatus: Function
 ) => {
   const newArr: TileInterface[] = [];
 
@@ -64,29 +66,29 @@ export const startNewGame = (
   generateNewValueTile(newArr, setTileList);
   generateNewValueTile(newArr, setTileList);
   scoreBoardDispatch({ type: "reset" });
-  setGameIsRunning(true);
+  setGameStatus({isRunning: true, message: 'inProgress' });
 };
 
 const updateScoreBoard = (newScore: number, scoreBoardDispatch: Function) => {
   scoreBoardDispatch({ type: "update", payload: newScore });
 };
 
-const checkIfWon = (tileList: TileInterface[], setGameIsRunning: Function) => {
+const checkIfWon = (tileList: TileInterface[], setGameStatus: Function) => {
   const playerWon = tileList.some((tile) => tile.value === 2048);
 
   if (playerWon) {
-    setGameIsRunning(false);
+    setGameStatus({isRunning: false, message: 'DU VANN!'});
   }
 };
 
 const checkIfLost = (
   tileList: TileInterface[],
-  setGameIsRunning: Function
+  setGameStatus: Function
 ): boolean => {
   const notLost = tileList.find((element) => element.value === 0);
 
   if (!notLost) {
-    setGameIsRunning(false);
+    setGameStatus({isRunning: false, message: 'Du förlorade!'});
   }
 
   return !notLost;
@@ -96,7 +98,7 @@ export const moveHorizontal = (
   direction: string,
   tileList: TileInterface[],
   setTileList: Function,
-  gameIsRunning: boolean
+  gameStatus: gameStatusInterface
 ) => {
   const updatedTileList = [...tileList];
 
@@ -132,7 +134,7 @@ export const moveHorizontal = (
     }
   }
 
-  if (gameIsRunning) {
+  if (gameStatus.isRunning) {
     setTileList(updatedTileList);
   }
 };
@@ -141,7 +143,7 @@ export const moveVertical = (
   direction: string,
   tileList: TileInterface[],
   setTileList: Function,
-  gameIsRunning: boolean
+  gameStatus: gameStatusInterface
 ): void => {
   const updatedTileList = [...tileList];
 
@@ -175,7 +177,7 @@ export const moveVertical = (
     updatedTileList[i + 12].value = arrAfterMovement[3];
   }
 
-  if (gameIsRunning) {
+  if (gameStatus.isRunning) {
     setTileList(updatedTileList);
   }
 };

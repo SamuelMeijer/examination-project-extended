@@ -33,9 +33,14 @@ interface ScoreBoardInterface {
   moves: number;
 }
 
+export interface gameStatusInterface {
+  isRunning: boolean,
+  message: string
+}
+
 // TODO: Add logic for user being logged in or not
 export default function Game2048() {
-  const [gameIsRunning, _setGameIsRunning] = useState(false);
+  const [gameStatus, _setGameStatus] = useState<gameStatusInterface>({isRunning: false, message: 'Starta ett nytt spel'});
   const [tileList, _setTileList] = useState<TileInterface[]>([]);
 
   const initialScoreBoardState: ScoreBoardInterface = { score: 0, moves: 0 };
@@ -45,10 +50,10 @@ export default function Game2048() {
   );
 
   // Using useRef to make eventlistener able to access current value of states
-  const gameIsRunningRef = useRef(gameIsRunning);
-  const setGameIsRunning = (data: boolean) => {
-    gameIsRunningRef.current = data;
-    _setGameIsRunning(data);
+  const gameStatusRef = useRef(gameStatus);
+  const setGameStatus = (data: gameStatusInterface) => {
+    gameStatusRef.current = data;
+    _setGameStatus(data);
   };
 
   const tileListRef = useRef(tileList);
@@ -60,7 +65,7 @@ export default function Game2048() {
   const handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    startNewGame(setTileList, scoreBoardDispatch, setGameIsRunning);
+    startNewGame(setTileList, scoreBoardDispatch, setGameStatus);
   };
 
   const handleKeyUp = function (event: KeyboardEvent) {
@@ -77,14 +82,14 @@ export default function Game2048() {
       7- Generate a new tile on an empty slot (if player did not lose)
     */
     // Prevent event from running if game is not active
-    if (gameIsRunningRef.current) {
+    if (gameStatusRef.current.isRunning) {
       if ( event.key === "ArrowRight" || event.key === "d" || event.key === "D") {
         handleMovement(
           "Right",
           tileListRef.current,
           setTileList,
-          gameIsRunningRef.current,
-          setGameIsRunning,
+          gameStatusRef.current,
+          setGameStatus,
           scoreBoardDispatch
         );
       }
@@ -94,8 +99,8 @@ export default function Game2048() {
           "Left",
           tileListRef.current,
           setTileList,
-          gameIsRunningRef.current,
-          setGameIsRunning,
+          gameStatusRef.current,
+          setGameStatus,
           scoreBoardDispatch
         );
       }
@@ -105,8 +110,8 @@ export default function Game2048() {
           "Down",
           tileListRef.current,
           setTileList,
-          gameIsRunningRef.current,
-          setGameIsRunning,
+          gameStatusRef.current,
+          setGameStatus,
           scoreBoardDispatch
         );
       }
@@ -116,8 +121,8 @@ export default function Game2048() {
           "Up",
           tileListRef.current,
           setTileList,
-          gameIsRunningRef.current,
-          setGameIsRunning,
+          gameStatusRef.current,
+          setGameStatus,
           scoreBoardDispatch
         );
       }
@@ -125,14 +130,14 @@ export default function Game2048() {
   };
 
   useEffect(() => {
-    if (gameIsRunning) {
+    if (gameStatusRef.current.isRunning) {
       window.addEventListener("keyup", handleKeyUp, true);
     } else {
       // Currently not working -> Stoping event from executing instead.
       window.removeEventListener("keyup", handleKeyUp, true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameIsRunningRef.current]);
+  }, [gameStatusRef.current]);
 
   return (
     <div className={Styles.gameContainer}>
@@ -148,11 +153,14 @@ export default function Game2048() {
       </div>
 
       <div className={Styles.gameGrid}>
-        {!gameIsRunning ? (
-          //TODO: REPLACE WITH <StyledButton textInput="Spela" colorInput="#FFC66C" onClick={startNewGame}/>
-          <button value="Spela" onClick={handleOnClick}>
-            Spela
-          </button>
+        {!gameStatusRef.current.isRunning ? (
+          <div className={Styles.preGameContainer}> 
+            <h3>{gameStatusRef.current.message}</h3>
+            {/* TODO: REPLACE WITH <StyledButton textInput="Spela" colorInput="#FFC66C" onClick={startNewGame}/> */}
+            <button value={gameStatusRef.current.message === 'Starta ett nytt spel' ? "Spela" : "Spela igen"} onClick={handleOnClick}>
+              {gameStatusRef.current.message === 'Starta ett nytt spel' ? "Spela" : "Spela igen"}
+            </button>
+          </div>
         ) : (
           tileList.map((tile, index) => {
             return (

@@ -43,6 +43,25 @@
     color: #4C352F
 }
 
+.preGameContainer {
+    width: 100%;
+    height: 100%;
+
+    /* #FFC66C in rgb */
+    background-color: rgba(255, 198, 108, 0.3);
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.preGameContainer h3 {
+    font-size: 26px;
+    color: #4C352F;
+}
+
 /* TODO: REMOVE WHEN REPLACING WITH StyledButton (SAME STYLING) */
 .gameGrid button {
     width: 300px;
