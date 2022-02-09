@@ -1,11 +1,103 @@
 import { TileInterface } from "../Tile/models/Tile";
 
+export const handleMovement = (
+  direction: string,
+  tileList: TileInterface[],
+  setTileList: Function,
+  gameIsRunning: boolean,
+  setGameIsRunning: Function,
+  scoreBoardDispatch: Function
+) => {
+  let newScore = 0;
+  /* 
+    1- Move all tiles to the DIRECTION side of the board
+    2- Check for possible merges
+  */
+  if (direction === "Right" || direction === "Left") {
+    moveHorizontal(direction, tileList, setTileList, gameIsRunning);
+    newScore = combineNumbersInRow(tileList, setTileList);
+  } else if (direction === "Up" || direction === "Down") {
+    moveVertical(direction, tileList, setTileList, gameIsRunning);
+    newScore = combineNumbersInColumn(tileList, setTileList);
+  }
+  /* 
+    3- Update scoreboard
+    4- Check if the player won 
+  */
+  updateScoreBoard(newScore, scoreBoardDispatch);
+  checkIfWon(tileList, setGameIsRunning);
+  /* 
+    5- Move all tiles to the DIRECTION side of the board after merges
+  */
+  if (direction === "Right" || direction === "Left") {
+    moveHorizontal(direction, tileList, setTileList, gameIsRunning);
+  } else if (direction === "Up" || direction === "Down") {
+    moveVertical(direction, tileList, setTileList, gameIsRunning);
+  }
+  /* 
+    6- Check if the player lost
+    7- Generate a new tile on an empty slot (if player did not lose)
+  */
+  let isLost = checkIfLost(tileList, setGameIsRunning);
+
+  if (!isLost) {
+    generateNewValueTile(tileList, setTileList);
+  }
+};
+
+export const startNewGame = (
+  setTileList: Function,
+  scoreBoardDispatch: Function,
+  setGameIsRunning: Function
+) => {
+  const newArr: TileInterface[] = [];
+
+  // Generating 4x4 new tiles and add them to newArr
+  for (let i = 0; i < 4; i++) {
+    newArr.push({ value: 0, positionX: 0, positionY: i });
+    newArr.push({ value: 0, positionX: 1, positionY: i });
+    newArr.push({ value: 0, positionX: 2, positionY: i });
+    newArr.push({ value: 0, positionX: 3, positionY: i });
+  }
+
+  // Change the value of two tiles to 2, reset scoreboard and start the game
+  generateNewValueTile(newArr, setTileList);
+  generateNewValueTile(newArr, setTileList);
+  scoreBoardDispatch({ type: "reset" });
+  setGameIsRunning(true);
+};
+
+const updateScoreBoard = (newScore: number, scoreBoardDispatch: Function) => {
+  scoreBoardDispatch({ type: "update", payload: newScore });
+};
+
+const checkIfWon = (tileList: TileInterface[], setGameIsRunning: Function) => {
+  const playerWon = tileList.some((tile) => tile.value === 2048);
+
+  if (playerWon) {
+    setGameIsRunning(false);
+  }
+};
+
+const checkIfLost = (
+  tileList: TileInterface[],
+  setGameIsRunning: Function
+): boolean => {
+  const notLost = tileList.find((element) => element.value === 0);
+
+  if (!notLost) {
+    setGameIsRunning(false);
+  }
+
+  return !notLost;
+};
+
 export const moveHorizontal = (
   direction: string,
   tileList: TileInterface[],
   setTileList: Function,
   gameIsRunning: boolean
-): void => {
+) => {
   const updatedTileList = [...tileList];
 
   for (let i = 0; i < tileList.length; i++) {
@@ -114,7 +206,6 @@ export const combineNumbersInRow = (
 
   setTileList(updatedTileList);
 
-  // TODO: Add scoreboard dispatch!
   // Returning to enable updating scoreboard
   return mergedTileValue;
 };
@@ -145,7 +236,6 @@ export const combineNumbersInColumn = (
 
   setTileList(updatedTileList);
 
-  // TODO: Add scoreboard dispatch!
   // Returning to enable updating scoreboard
   return mergedTileValue;
 };
@@ -154,9 +244,7 @@ export const combineNumbersInColumn = (
 export const generateNewValueTile = (
   tileList: TileInterface[],
   setTileList: Function
-): void => {
-  // TODO: Add check to see if all tiles have a value > 0 => Game is lost!
-
+) => {
   const updatedTileList = [...tileList];
   const randomNumber = Math.floor(Math.random() * tileList.length);
 

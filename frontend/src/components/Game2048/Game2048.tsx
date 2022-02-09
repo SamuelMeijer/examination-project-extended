@@ -7,13 +7,7 @@ import StyledButton from "../StyledButton/StyledButton";
 // Importing models
 import { TileInterface } from "./Tile/models/Tile";
 // Importing utils
-import {
-  moveHorizontal,
-  moveVertical,
-  combineNumbersInRow,
-  combineNumbersInColumn,
-  generateNewValueTile,
-} from "./gameLogic/gameLogic";
+import { startNewGame, handleMovement } from "./gameLogic/gameLogic";
 
 // TODO: Move scoreboard reducer and interface!
 type SCOREBOARD_ACTIONTYPE =
@@ -63,143 +57,69 @@ export default function Game2048() {
     _setTileList(data);
   };
 
-  const startNewGame = (event: React.MouseEvent<HTMLButtonElement>): void => {
+  const handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    // Populating the tileList
-    const newArr: TileInterface[] = [];
-
-    for (let i = 0; i < 4; i++) {
-      newArr.push({ value: 0, positionX: 0, positionY: i });
-      newArr.push({ value: 0, positionX: 1, positionY: i });
-      newArr.push({ value: 0, positionX: 2, positionY: i });
-      newArr.push({ value: 0, positionX: 3, positionY: i });
-    }
-
-    generateNewValueTile(newArr, setTileList);
-    generateNewValueTile(newArr, setTileList);
-    setGameIsRunning(true);
-    scoreBoardDispatch({ type: "reset" });
-  };
-
-  const updateScoreBoard = (newScore: number): void => {
-    scoreBoardDispatch({ type: "update", payload: newScore });
-  };
-
-  const checkIfWon = () => {
-    const playerWon = tileListRef.current.some((tile) => tile.value === 2048);
-
-    if (playerWon) {
-      setGameIsRunning(false);
-    }
-  };
-
-  const checkIfLost = () => {
-    const notLost = tileListRef.current.find((element) => element.value === 0);
-
-    if (!notLost) {
-      setGameIsRunning(false);
-    }
+    startNewGame(setTileList, scoreBoardDispatch, setGameIsRunning);
   };
 
   const handleKeyUp = function (event: KeyboardEvent) {
     // TODO: Fix so that the windows doesnt scroll or change keys from arrowkeys
     event.preventDefault();
 
+    /* This is what happens:
+      1- Move all tiles to the DIRECTION side of the board
+      2- Check for possible merges
+      3- Update scoreboard
+      4- Check if the player won
+      5- Move all tiles to the DIRECTION side of the board after merges
+      6- Check if the player lost
+      7- Generate a new tile on an empty slot (if player did not lose)
+    */
     // Prevent event from running if game is not active
     if (gameIsRunningRef.current) {
-      let newScore = 0;
-      /* 
-    1- Move all tiles to the DIRECTION side of the board
-    2- Check for possible merges
-    3- Update scoreboard
-    4- Check if the player won
-    5- Move all tiles to the DIRECTION side of the board after merges
-    6- Generate a new tile on an empty slot
-    */
-
-      if (
-        event.key === "ArrowRight" ||
-        event.key === "d" ||
-        event.key === "D"
-      ) {
-        moveHorizontal(
+      if ( event.key === "ArrowRight" || event.key === "d" || event.key === "D") {
+        handleMovement(
           "Right",
           tileListRef.current,
           setTileList,
-          gameIsRunningRef.current
+          gameIsRunningRef.current,
+          setGameIsRunning,
+          scoreBoardDispatch
         );
-        newScore = combineNumbersInRow(tileListRef.current, setTileList);
-        updateScoreBoard(newScore);
-        checkIfWon();
-        moveHorizontal(
-          "Right",
-          tileListRef.current,
-          setTileList,
-          gameIsRunningRef.current
-        );
-        checkIfLost();
-        generateNewValueTile(tileListRef.current, setTileList);
       }
 
       if (event.key === "ArrowLeft" || event.key === "a" || event.key === "A") {
-        moveHorizontal(
+        handleMovement(
           "Left",
           tileListRef.current,
           setTileList,
-          gameIsRunningRef.current
+          gameIsRunningRef.current,
+          setGameIsRunning,
+          scoreBoardDispatch
         );
-        newScore = combineNumbersInRow(tileListRef.current, setTileList);
-        updateScoreBoard(newScore);
-        checkIfWon();
-        moveHorizontal(
-          "Left",
-          tileListRef.current,
-          setTileList,
-          gameIsRunningRef.current
-        );
-        checkIfLost();
-        generateNewValueTile(tileListRef.current, setTileList);
       }
 
       if (event.key === "ArrowDown" || event.key === "s" || event.key === "S") {
-        moveVertical(
+        handleMovement(
           "Down",
           tileListRef.current,
           setTileList,
-          gameIsRunningRef.current
+          gameIsRunningRef.current,
+          setGameIsRunning,
+          scoreBoardDispatch
         );
-        newScore = combineNumbersInColumn(tileListRef.current, setTileList);
-        updateScoreBoard(newScore);
-        checkIfWon();
-        moveVertical(
-          "Down",
-          tileListRef.current,
-          setTileList,
-          gameIsRunningRef.current
-        );
-        checkIfLost();
-        generateNewValueTile(tileListRef.current, setTileList);
       }
 
       if (event.key === "ArrowUp" || event.key === "w" || event.key === "W") {
-        moveVertical(
+        handleMovement(
           "Up",
           tileListRef.current,
           setTileList,
-          gameIsRunningRef.current
+          gameIsRunningRef.current,
+          setGameIsRunning,
+          scoreBoardDispatch
         );
-        newScore = combineNumbersInColumn(tileListRef.current, setTileList);
-        updateScoreBoard(newScore);
-        checkIfWon();
-        moveVertical(
-          "Up",
-          tileListRef.current,
-          setTileList,
-          gameIsRunningRef.current
-        );
-        checkIfLost();
-        generateNewValueTile(tileListRef.current, setTileList);
       }
     }
   };
@@ -212,7 +132,7 @@ export default function Game2048() {
       window.removeEventListener("keyup", handleKeyUp, true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameIsRunningRef]);
+  }, [gameIsRunningRef.current]);
 
   return (
     <div className={Styles.gameContainer}>
@@ -230,7 +150,7 @@ export default function Game2048() {
       <div className={Styles.gameGrid}>
         {!gameIsRunning ? (
           //TODO: REPLACE WITH <StyledButton textInput="Spela" colorInput="#FFC66C" onClick={startNewGame}/>
-          <button value="Spela" onClick={startNewGame}>
+          <button value="Spela" onClick={handleOnClick}>
             Spela
           </button>
         ) : (
