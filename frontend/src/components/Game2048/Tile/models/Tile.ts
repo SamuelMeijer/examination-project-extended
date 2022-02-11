@@ -5,4 +5,6 @@ export interface TileInterface {
   positionX: number;
   // The tiles vertical position: 0-3
   positionY: number;
+  // The status for if the tile has merged or not
+  hasMerged: boolean
 }

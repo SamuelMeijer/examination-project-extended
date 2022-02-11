@@ -1,10 +1,11 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useState, useEffect } from 'react';
 
 import { TileInterface } from './models/Tile';
 import Styles from './tile.module.css'
 
-export default function Tile ({value, positionX, positionY}: TileInterface) {
-    
+export default function Tile ({value, positionX, positionY, hasMerged}: TileInterface) {
+    const [scale, setScale] = useState<number>(1);
+
     let dynamicBackgroundColor = ''
     switch (value) {
         case 2:
@@ -53,8 +54,17 @@ export default function Tile ({value, positionX, positionY}: TileInterface) {
     const tileStyle: CSSProperties = {
         top: `${dynamicPositioning(positionY)}px`,
         left: `${dynamicPositioning(positionX)}px`,
-        backgroundColor: `${dynamicBackgroundColor}`
+        backgroundColor: `${dynamicBackgroundColor}`,
+        transform: `scale(${scale})`
     }
+
+    useEffect(() => {
+        // Changing value of scale to make a "flashing"-effect on a tile when merged
+        if (hasMerged) {
+            setScale(1.1)
+            setTimeout(() => setScale(1), 125)
+        }
+    }, [hasMerged])
 
     return (
         <div className={Styles.tile} style={tileStyle}>

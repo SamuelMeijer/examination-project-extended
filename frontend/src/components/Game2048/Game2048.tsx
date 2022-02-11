@@ -41,6 +41,7 @@ export interface gameStatusInterface {
 export default function Game2048() {
   const [gameStatus, _setGameStatus] = useState<gameStatusInterface>({isRunning: false, message: 'Starta ett nytt spel'});
   const [tileList, _setTileList] = useState<TileInterface[]>([]);
+  const [preventMovement, _setPreventMovement] = useState<boolean>(false);
 
   const initialScoreBoardState: ScoreBoardInterface = { score: 0, moves: 0 };
   const [scoreBoard, scoreBoardDispatch] = useReducer(
@@ -59,6 +60,12 @@ export default function Game2048() {
   const setTileList = (data: TileInterface[]) => {
     tileListRef.current = data;
     _setTileList(data);
+  };
+
+  const preventMovementRef = useRef(preventMovement);
+  const setPreventMovement = (data: boolean) => {
+    preventMovementRef.current = data;
+    _setPreventMovement(data);
   };
 
   const handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -81,7 +88,7 @@ export default function Game2048() {
       7- Generate a new tile on an empty slot (if player did not lose)
     */
     // Prevent event from running if game is not active
-    if (gameStatusRef.current.isRunning) {
+    if (gameStatusRef.current.isRunning && !preventMovementRef.current) {
       if ( event.key === "ArrowRight" || event.key === "d" || event.key === "D") {
         handleMovement(
           "Right",
@@ -125,6 +132,10 @@ export default function Game2048() {
           scoreBoardDispatch
         );
       }
+
+      // Limiting the number of moves to 4 per second
+      setPreventMovement(true)
+      setTimeout(()=> setPreventMovement(false), 250)
     }
   };
 
@@ -167,6 +178,7 @@ export default function Game2048() {
                 value={tile.value}
                 positionX={tile.positionX}
                 positionY={tile.positionY}
+                hasMerged={tile.hasMerged}
               />
             );
           })

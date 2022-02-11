@@ -17,10 +17,10 @@ export const handleMovement = (
   */
   if (direction === "Right" || direction === "Left") {
     moveHorizontal(direction, tileList, setTileList, gameStatus);
-    newScore = combineNumbersInRow(tileList, setTileList);
+    newScore = combineNumbersInRow(direction, tileList, setTileList);
   } else if (direction === "Up" || direction === "Down") {
     moveVertical(direction, tileList, setTileList, gameStatus);
-    newScore = combineNumbersInColumn(tileList, setTileList);
+    newScore = combineNumbersInColumn(direction, tileList, setTileList);
   }
   /* 
     3- Update scoreboard
@@ -56,10 +56,10 @@ export const startNewGame = (
 
   // Generating 4x4 new tiles and add them to newArr
   for (let i = 0; i < 4; i++) {
-    newArr.push({ value: 0, positionX: 0, positionY: i });
-    newArr.push({ value: 0, positionX: 1, positionY: i });
-    newArr.push({ value: 0, positionX: 2, positionY: i });
-    newArr.push({ value: 0, positionX: 3, positionY: i });
+    newArr.push({ value: 0, positionX: 0, positionY: i, hasMerged: false });
+    newArr.push({ value: 0, positionX: 1, positionY: i, hasMerged: false });
+    newArr.push({ value: 0, positionX: 2, positionY: i, hasMerged: false });
+    newArr.push({ value: 0, positionX: 3, positionY: i, hasMerged: false });
   }
 
   // Change the value of two tiles to 2, reset scoreboard and start the game
@@ -183,10 +183,14 @@ export const moveVertical = (
 };
 
 export const combineNumbersInRow = (
+  direction: string,
   tileList: TileInterface[],
   setTileList: Function
 ) => {
   const updatedTileList = [...tileList];
+
+  // Reseting hasMerged on all tiles
+  updatedTileList.forEach(tile => tile.hasMerged = false)
 
   // Keeping track of the total value of merged tiles
   let mergedTileValue = 0;
@@ -203,6 +207,13 @@ export const combineNumbersInRow = (
 
       // Updating value of merged tiles
       mergedTileValue += updatedTileList[i].value;
+
+      // Updating hasMerged based on direction
+      if (direction === 'Left') {
+        updatedTileList[i].hasMerged = true
+      } else if (direction === 'Right') {
+        updatedTileList[i + 1].hasMerged = true
+      }
     }
   }
 
@@ -213,10 +224,14 @@ export const combineNumbersInRow = (
 };
 
 export const combineNumbersInColumn = (
+  direction: string,
   tileList: TileInterface[],
   setTileList: Function
 ) => {
   const updatedTileList = [...tileList];
+
+  // Reseting hasMerged on all tiles
+  updatedTileList.forEach(tile => tile.hasMerged = false)
 
   // Keeping track of the total value of merged tiles
   let mergedTileValue = 0;
@@ -233,6 +248,13 @@ export const combineNumbersInColumn = (
 
       // Updating value of merged tiles
       mergedTileValue += updatedTileList[i].value;
+
+      // Updating hasMerged based on direction
+      if (direction === 'Up') {
+        updatedTileList[i].hasMerged = true
+      } else if (direction === 'Down') {
+        updatedTileList[i + 4].hasMerged = true
+      }
     }
   }
 
