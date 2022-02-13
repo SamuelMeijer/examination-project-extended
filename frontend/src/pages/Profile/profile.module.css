@@ -97,6 +97,10 @@
 }
 
 .changePasswordForm {
+    height: 192px;
+}
+
+form {
     width: 100%;
     height: 192px;
 
@@ -105,12 +109,12 @@
     align-items: center;
 }
 
-.changePasswordForm label {
+form label {
     width: auto;
     height: 20px;
 }
 
-.changePasswordForm input {
+form input {
     width: 220px;
     height: 20px;
     border: 1px solid #4C352F;
