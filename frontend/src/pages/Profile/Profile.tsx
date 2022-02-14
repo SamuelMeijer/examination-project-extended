@@ -1,29 +1,97 @@
-import React, { useState } from "react";
+import React, { useState, useReducer } from "react";
 import Styles from "./profile.module.css";
 
 import { FaUserAstronaut } from "react-icons/fa";
 import StyledButton from "../../components/StyledButton/StyledButton";
 
+// TODO: Move interafaces and other stuff into separate file
+interface authenticatedInterface {
+  jwt: "string";
+  user: {
+    email: "string";
+    id: "string";
+    username: "username";
+  };
+}
+
+interface loginFormInterface {
+  identifier: string;
+  password: string;
+}
+
+type LOGINFORM_ACTIONTYPE =
+  | { type: "updateIdentifier"; payload: string }
+  | { type: "updatePassword"; payload: string };
+
+function loginFormReducer(
+  state: loginFormInterface,
+  action: LOGINFORM_ACTIONTYPE
+) {
+  switch (action.type) {
+    case "updateIdentifier":
+      return { identifier: action.payload, password: state.password };
+    case "updatePassword":
+      return { identifier: state.identifier, password: action.payload };
+    default:
+      throw new Error();
+  }
+}
+
 // TODO: Add logic for user being logged in or not
 export default function Profile() {
-  const [authenticated, setAuthenticated] = useState(false);
-  const [userInformation, setuserInformation] = useState({});
+  const [authenticated, setAuthenticated] =
+    useState<authenticatedInterface | null>(null);
 
-  const handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const initialLoginFormState: loginFormInterface = {
+    identifier: "",
+    password: "",
+  };
+  const [loginFormState, loginFormStateDispatch] = useReducer(
+    loginFormReducer,
+    initialLoginFormState
+  );
+
+  const handleLoginFormChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     event.preventDefault();
 
-    fetch('localhost:1337/api/auth/local')
-    .then((res) => {
-      if (!res.ok) {
-        throw Error(res.statusText);
-      } else {
-        return res.json();
-      }
+    if (event.target.name === "identifier") {
+      loginFormStateDispatch({
+        type: "updateIdentifier",
+        payload: event.target.value,
+      });
+    }
+
+    if (event.target.name === "password") {
+      loginFormStateDispatch({
+        type: "updatePassword",
+        payload: event.target.value,
+      });
+    }
+  };
+
+  const handleLoginOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    fetch("http://localhost:1337/api/auth/local", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(loginFormState),
     })
-    .then((data) => {
-      console.log(data.data)
-    })
-    .catch((err) => console.error(err));
+      .then((res) => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        } else {
+          return res.json();
+        }
+      })
+      .then((data) => {
+        console.log(data);
+        // TODO: Handle bad requests
+        setAuthenticated(data);
+      })
+      .catch((err) => console.error(err));
   };
 
   return (
@@ -33,7 +101,7 @@ export default function Profile() {
           <div className={Styles.userInformationContainer}>
             <div className={Styles.colorDivider}>
               {/* TODO: Make dynamic */}
-              <h2>Användarnamn</h2>
+              <h2>{authenticated.user.username}</h2>
             </div>
 
             <div className={Styles.userInformationContent}>
@@ -102,10 +170,20 @@ export default function Profile() {
               <div className={Styles.userInformationText}>
                 <form>
                   <label>Ange användarnamn eller email</label>
-                  <input type="text" />
+                  <input
+                    name="identifier"
+                    type="text"
+                    onChange={handleLoginFormChange}
+                  />
                   <label>Ange lösenord</label>
-                  <input type="password" />
-                  <button type="submit" onClick={handleOnClick}>Logga in</button>
+                  <input
+                    name="password"
+                    type="password"
+                    onChange={handleLoginFormChange}
+                  />
+                  <button type="submit" onClick={handleLoginOnClick}>
+                    Logga in
+                  </button>
                 </form>
 
                 {/* <StyledButton textInput="Logga in" colorInput="#F78632" /> */}
