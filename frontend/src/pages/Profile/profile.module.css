@@ -25,6 +25,29 @@
     color: #4C352F;
 }
 
+/* Same styling as Styledbutton-component */
+.profileContentContainer button {
+    width: 300px;
+    height: 100px;
+    
+    border-radius: 20px;
+
+    background-color: #4C352F;
+    color: #F78632;
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    align-self: center;
+
+    cursor: pointer;
+}
+
 .colorDivider {
     width: 100%;
     max-width: 517px;
