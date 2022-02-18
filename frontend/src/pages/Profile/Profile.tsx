@@ -4,112 +4,26 @@ import Styles from "./profile.module.css";
 import { FaUserAstronaut } from "react-icons/fa";
 import StyledButton from "../../components/StyledButton/StyledButton";
 
-// TODO: Move interafaces and other stuff into separate file
-interface authenticatedInterface {
-  jwt: "string";
-  user: {
-    email: "string";
-    id: "string";
-    username: "username";
-  };
-}
+// Importing hooks
+import { authenticatedInterface } from "../../hooks/authenticatedUserHook";
+import {
+  initialLoginFormState,
+  loginFormReducer,
+} from "../../hooks/loginFormHook";
+import {
+  initialRegisterFormState,
+  registerFormReducer,
+} from "../../hooks/registerFormHook";
 
-// ***** LOGINFORM *****
-interface loginFormInterface {
-  identifier: string;
-  password: string;
-}
-
-type LOGINFORM_ACTIONTYPE =
-  | { type: "updateIdentifier"; payload: string }
-  | { type: "updatePassword"; payload: string };
-
-function loginFormReducer(
-  state: loginFormInterface,
-  action: LOGINFORM_ACTIONTYPE
-) {
-  switch (action.type) {
-    case "updateIdentifier":
-      return { identifier: action.payload, password: state.password };
-    case "updatePassword":
-      return { identifier: state.identifier, password: action.payload };
-    default:
-      throw new Error();
-  }
-}
-
-// ***** REGISTERFORM *****
-interface registerFormInterface {
-  userName: string;
-  userEmail: string;
-  userPassword: string;
-  userPasswordRepeat: string;
-}
-
-type REGISTERFORM_ACTIONTYPE =
-  | { type: "updateUserName"; payload: string }
-  | { type: "updateUserEmail"; payload: string }
-  | { type: "updateUserPassword"; payload: string }
-  | { type: "updateUserPasswordRepeat"; payload: string };
-
-function registerFormReducer(
-  state: registerFormInterface,
-  action: REGISTERFORM_ACTIONTYPE
-) {
-  switch (action.type) {
-    case "updateUserName":
-      return {
-        userName: action.payload,
-        userEmail: state.userEmail,
-        userPassword: state.userPassword,
-        userPasswordRepeat: state.userPasswordRepeat,
-      };
-    case "updateUserEmail":
-      return {
-        userName: state.userName,
-        userEmail: action.payload,
-        userPassword: state.userPassword,
-        userPasswordRepeat: state.userPasswordRepeat,
-      };
-    case "updateUserPassword":
-      return {
-        userName: state.userName,
-        userEmail: state.userEmail,
-        userPassword: action.payload,
-        userPasswordRepeat: state.userPasswordRepeat,
-      };
-    case "updateUserPasswordRepeat":
-      return {
-        userName: state.userName,
-        userEmail: state.userEmail,
-        userPassword: state.userPassword,
-        userPasswordRepeat: action.payload,
-      };
-    default:
-      throw new Error();
-  }
-}
-
-// TODO: Add logic for user being logged in or not
 export default function Profile() {
   const [authenticated, setAuthenticated] =
     useState<authenticatedInterface | null>(null);
 
-  const initialLoginFormState: loginFormInterface = {
-    identifier: "",
-    password: "",
-  };
   const [loginFormState, loginFormStateDispatch] = useReducer(
     loginFormReducer,
     initialLoginFormState
   );
 
-  const initialRegisterFormState: registerFormInterface = {
-    userName: "",
-    userEmail: "",
-    userPassword: "",
-    userPasswordRepeat: "",
-  };
   const [registerFormState, registerFormStateDispatch] = useReducer(
     registerFormReducer,
     initialRegisterFormState
