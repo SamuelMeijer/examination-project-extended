@@ -11,6 +11,8 @@ import NoSuchPage from "./pages/NoSuchPage/NoSuchPage";
 // Importing Components
 import Navbar from "./components/Navbar/Navbar";
 import Header from "./components/Header/Header";
+// Importing AuthenticatedUser hook
+import AuthenticatedUserProvider from "./hooks/authenticatedUserHook";
 
 function App() {
   return (
@@ -19,14 +21,16 @@ function App() {
       <Header />
 
       <main className="mainContainer">
-        <Routes>
-          <Route path="/" element={<Navigate to="/home" />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/game" element={<Game />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="*" element={<NoSuchPage />} />
-        </Routes>
+        <AuthenticatedUserProvider>
+          <Routes>
+            <Route path="/" element={<Navigate to="/home" />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/game" element={<Game />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="*" element={<NoSuchPage />} />
+          </Routes>
+        </AuthenticatedUserProvider>
       </main>
     </div>
   );

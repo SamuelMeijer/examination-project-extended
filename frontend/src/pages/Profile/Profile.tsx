@@ -1,11 +1,14 @@
-import React, { useState, useReducer } from "react";
+import React, { useReducer } from "react";
 import Styles from "./profile.module.css";
 
 import { FaUserAstronaut } from "react-icons/fa";
 import StyledButton from "../../components/StyledButton/StyledButton";
 
 // Importing hooks
-import { authenticatedInterface } from "../../hooks/authenticatedUserHook";
+import {
+  useAuthenticatedUser,
+  useUpdateAuthenticatedUser,
+} from "../../hooks/authenticatedUserHook";
 import {
   initialLoginFormState,
   loginFormReducer,
@@ -16,8 +19,8 @@ import {
 } from "../../hooks/registerFormHook";
 
 export default function Profile() {
-  const [authenticated, setAuthenticated] =
-    useState<authenticatedInterface | null>(null);
+  const authenticatedUser = useAuthenticatedUser();
+  const updateAuthenticatedUser = useUpdateAuthenticatedUser();
 
   const [loginFormState, loginFormStateDispatch] = useReducer(
     loginFormReducer,
@@ -66,7 +69,7 @@ export default function Profile() {
         }
       })
       .then((data) => {
-        setAuthenticated(data);
+        updateAuthenticatedUser(data);
       })
       .catch((err) => console.error(err));
   };
@@ -132,7 +135,7 @@ export default function Profile() {
           }
         })
         .then((data) => {
-          setAuthenticated(data);
+          updateAuthenticatedUser(data);
         })
         .catch((err) => console.error(err));
     } else {
@@ -143,12 +146,12 @@ export default function Profile() {
 
   return (
     <section className={Styles.profileContentContainer}>
-      {authenticated ? (
+      {authenticatedUser ? (
         <div>
           <div className={Styles.userInformationContainer}>
             <div className={Styles.colorDivider}>
               {/* TODO: Make dynamic */}
-              <h2>{authenticated.user.username}</h2>
+              <h2>{authenticatedUser.user.username}</h2>
             </div>
 
             <div className={Styles.userInformationContent}>
@@ -156,9 +159,9 @@ export default function Profile() {
                 <p>
                   Din information:
                   <br />
-                  Användarnamn: {authenticated.user.username}
+                  Användarnamn: {authenticatedUser.user.username}
                   <br />
-                  Registerad epost: {authenticated.user.email}
+                  Registerad epost: {authenticatedUser.user.email}
                 </p>
 
                 <p>

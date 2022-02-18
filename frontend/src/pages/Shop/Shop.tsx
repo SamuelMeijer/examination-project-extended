@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Styles from "./shop.module.css";
 
+import { useAuthenticatedUser, useUpdateAuthenticatedUser} from "../../hooks/authenticatedUserHook";
+
 import StyledButton from "../../components/StyledButton/StyledButton";
 
 interface shopItemInterface {
@@ -16,6 +18,8 @@ interface shopItemInterface {
 
 export default function Shop() {
   const [shopItems, setShopItems] = useState<shopItemInterface[]>([]);
+  const authenticatedUser = useAuthenticatedUser()
+  const updateAuthenticatedUser = useUpdateAuthenticatedUser()
 
   useEffect(() => {
     fetch("http://localhost:1337/api/shopitems")
@@ -31,6 +35,9 @@ export default function Shop() {
       })
       .catch((err) => console.error(err));
   }, []);
+
+  console.log('authenticatedUser: ', authenticatedUser )
+  console.log('updateAuthenticatedUser: ', updateAuthenticatedUser  )
 
   return (
     <section className={Styles.contentContainer}>
