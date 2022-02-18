@@ -52,23 +52,43 @@ type REGISTERFORM_ACTIONTYPE =
   | { type: "updateUserPassword"; payload: string }
   | { type: "updateUserPasswordRepeat"; payload: string };
 
-  function registerFormReducer(
-    state: registerFormInterface,
-    action: REGISTERFORM_ACTIONTYPE
-  ) {
-    switch (action.type) {
-      case 'updateUserName':
-        return { userName: action.payload, userEmail: state.userEmail, userPassword: state.userPassword, userPasswordRepeat: state.userPasswordRepeat}
-      case 'updateUserEmail':
-        return { userName: state.userName, userEmail: action.payload, userPassword: state.userPassword, userPasswordRepeat: state.userPasswordRepeat}
-      case 'updateUserPassword':
-        return { userName: state.userName, userEmail: state.userEmail, userPassword: action.payload, userPasswordRepeat: state.userPasswordRepeat}
-      case 'updateUserPasswordRepeat':
-        return { userName: state.userName, userEmail: state.userEmail, userPassword: state.userPassword, userPasswordRepeat: action.payload}
-      default:
-        throw new Error();
-    }
+function registerFormReducer(
+  state: registerFormInterface,
+  action: REGISTERFORM_ACTIONTYPE
+) {
+  switch (action.type) {
+    case "updateUserName":
+      return {
+        userName: action.payload,
+        userEmail: state.userEmail,
+        userPassword: state.userPassword,
+        userPasswordRepeat: state.userPasswordRepeat,
+      };
+    case "updateUserEmail":
+      return {
+        userName: state.userName,
+        userEmail: action.payload,
+        userPassword: state.userPassword,
+        userPasswordRepeat: state.userPasswordRepeat,
+      };
+    case "updateUserPassword":
+      return {
+        userName: state.userName,
+        userEmail: state.userEmail,
+        userPassword: action.payload,
+        userPasswordRepeat: state.userPasswordRepeat,
+      };
+    case "updateUserPasswordRepeat":
+      return {
+        userName: state.userName,
+        userEmail: state.userEmail,
+        userPassword: state.userPassword,
+        userPasswordRepeat: action.payload,
+      };
+    default:
+      throw new Error();
   }
+}
 
 // TODO: Add logic for user being logged in or not
 export default function Profile() {
@@ -79,7 +99,7 @@ export default function Profile() {
     identifier: "",
     password: "",
   };
-  const [loginFormState, loginFormStateDispatch] = useReducer (
+  const [loginFormState, loginFormStateDispatch] = useReducer(
     loginFormReducer,
     initialLoginFormState
   );
@@ -93,7 +113,7 @@ export default function Profile() {
   const [registerFormState, registerFormStateDispatch] = useReducer(
     registerFormReducer,
     initialRegisterFormState
-  )
+  );
 
   const handleLoginFormChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -166,38 +186,44 @@ export default function Profile() {
         payload: event.target.value,
       });
     }
-  }
+  };
 
   const handleRegisterOnSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
     // TODO: Add guard against whitespace and characters not allowed.
     // Guarding so that the provided passwords match
-    if (registerFormState.userPassword === registerFormState.userPasswordRepeat) {
-    const reqBody = {username: registerFormState.userName, email: registerFormState.userEmail, password: registerFormState.userPassword}
+    if (
+      registerFormState.userPassword === registerFormState.userPasswordRepeat
+    ) {
+      const reqBody = {
+        username: registerFormState.userName,
+        email: registerFormState.userEmail,
+        password: registerFormState.userPassword,
+      };
 
-    // Register the user with provided information.
-    fetch("http://localhost:1337/api/auth/local/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(reqBody),
-    })
-      .then((res) => {
-        console.log(res)
-        // TODO: Handle bad requests (Username/email exists, wrong format etc.)
-        if (!res.ok) {
-          throw Error(res.statusText);
-        } else {
-          return res.json();
-        }
+      // Register the user with provided information.
+      fetch("http://localhost:1337/api/auth/local/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(reqBody),
       })
-      .then((data) => {
-        setAuthenticated(data);
-      })
-      .catch((err) => console.error(err));
+        .then((res) => {
+          console.log(res);
+          // TODO: Handle bad requests (Username/email exists, wrong format etc.)
+          if (!res.ok) {
+            throw Error(res.statusText);
+          } else {
+            return res.json();
+          }
+        })
+        .then((data) => {
+          setAuthenticated(data);
+        })
+        .catch((err) => console.error(err));
     } else {
       // TODO: Add ass message to user
-      console.log('Password doesnt match')
+      console.log("Password doesnt match");
     }
   };
 
@@ -216,9 +242,9 @@ export default function Profile() {
                 <p>
                   Din information:
                   <br />
-                  Användarnamn: ANVÄNDARNAMN
+                  Användarnamn: {authenticated.user.username}
                   <br />
-                  Registerad epost: EPOST@EPOST.com
+                  Registerad epost: {authenticated.user.email}
                 </p>
 
                 <p>
@@ -238,6 +264,7 @@ export default function Profile() {
                 </p>
 
                 <p>Tillgänglig webbshopkredit: 4 π</p>
+                {/* TODO: Add logout-functionality */}
               </div>
               <div className={Styles.userPictureContainer}>
                 <FaUserAstronaut fontSize="150px" />
@@ -275,7 +302,10 @@ export default function Profile() {
 
             <div className={Styles.userInformationContent}>
               <div className={Styles.userInformationText}>
-                <form className={Styles.changePasswordForm} onSubmit={handleLoginOnSubmit}>
+                <form
+                  className={Styles.changePasswordForm}
+                  onSubmit={handleLoginOnSubmit}
+                >
                   <label>Ange användarnamn eller epost</label>
                   <input
                     required
@@ -290,9 +320,7 @@ export default function Profile() {
                     type="password"
                     onChange={handleLoginFormChange}
                   />
-                  <button type="submit">
-                    Logga in
-                  </button>
+                  <button type="submit">Logga in</button>
                 </form>
               </div>
             </div>
@@ -305,18 +333,41 @@ export default function Profile() {
             <div className={Styles.changePasswordContainer}>
               <h3>Inte medlem? Registrerar dig här</h3>
               {/* TODO: ADD REQUIRED DATA */}
-              <form className={Styles.changePasswordForm} onSubmit={handleRegisterOnSubmit}>
+              <form
+                className={Styles.changePasswordForm}
+                onSubmit={handleRegisterOnSubmit}
+              >
                 <label>Välj användarnamn</label>
-                <input required name="userName" type="text" min="3" max="12" onChange={handleRegisterFormChange} />
+                <input
+                  required
+                  name="userName"
+                  type="text"
+                  min="3"
+                  max="12"
+                  onChange={handleRegisterFormChange}
+                />
                 <label>Din epost</label>
-                <input required name="userEmail" type="text" onChange={handleRegisterFormChange} />
+                <input
+                  required
+                  name="userEmail"
+                  type="text"
+                  onChange={handleRegisterFormChange}
+                />
                 <label>Ange lösenord</label>
-                <input required name="userPassword" type="password" onChange={handleRegisterFormChange} />
+                <input
+                  required
+                  name="userPassword"
+                  type="password"
+                  onChange={handleRegisterFormChange}
+                />
                 <label>Repetera angett lösenord</label>
-                <input required name="userPasswordRepeat" type="password" onChange={handleRegisterFormChange} />
-                <button type="submit">
-                  Registrera dig
-                </button>
+                <input
+                  required
+                  name="userPasswordRepeat"
+                  type="password"
+                  onChange={handleRegisterFormChange}
+                />
+                <button type="submit">Registrera dig</button>
               </form>
             </div>
           </div>
