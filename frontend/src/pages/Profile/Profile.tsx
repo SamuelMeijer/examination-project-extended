@@ -17,6 +17,7 @@ import {
   initialRegisterFormState,
   registerFormReducer,
 } from "../../hooks/registerFormHook";
+import { initialNewPasswordFormState, newPasswordFormReducer } from "../../hooks/newPasswordHook";
 
 export default function Profile() {
   const authenticatedUser = useAuthenticatedUser();
@@ -30,6 +31,11 @@ export default function Profile() {
   const [registerFormState, registerFormStateDispatch] = useReducer(
     registerFormReducer,
     initialRegisterFormState
+  );
+
+  const [newPasswordFormState, newPasswordFormStateDispatch] = useReducer(
+    newPasswordFormReducer,
+    initialNewPasswordFormState
   );
 
   const handleLoginFormChange = (
@@ -139,9 +145,63 @@ export default function Profile() {
         })
         .catch((err) => console.error(err));
     } else {
-      // TODO: Add ass message to user
+      // TODO: Add as message to user
       console.log("Password doesnt match");
     }
+  };
+
+  const handleNewPasswordFormChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    event.preventDefault();
+
+    if (event.target.name === "newPassword") {
+      newPasswordFormStateDispatch({
+        type: "updatePassword",
+        payload: event.target.value,
+      });
+    }
+
+    if (event.target.name === "confirmNewPassword") {
+      newPasswordFormStateDispatch({
+        type: "updateConfirmPassword",
+        payload: event.target.value,
+      });
+    }
+  };
+
+  const handleNewPasswordOnSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    const reqBody = {
+      password: 'jullov',
+      confirmPassword: 'Ost'
+    };
+
+    // console.log('Newpassword: ', newPasswordFormState)
+    // console.log('authJWT: ', authenticatedUser?.jwt)
+
+    fetch("http://localhost:1337/api/users/me", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${authenticatedUser?.jwt}`},
+      body: JSON.stringify({
+        password: "hejvakul",
+        confirmPassword: "hejvakul"
+      }),
+    })
+      .then((res) => {
+        console.log('RES: ', res)
+        // TODO: Handle bad requests (400 = Wrong identifier/password)
+        if (!res.ok) {
+          throw Error(res.statusText);
+        } else {
+          return res.json();
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => console.error(err));
   };
 
   return (
@@ -196,17 +256,13 @@ export default function Profile() {
             <div className={Styles.changePasswordContainer}>
               <h3>Vill du ändra lösenord?</h3>
               {/* TODO: ADD REQUIRED DATA */}
-              <form className={Styles.changePasswordForm}>
-                <label>Ditt nuvarande lösenord</label>
-                <input type="text" />
-                <label>Repetera nuvarande lösenord</label>
-                <input type="text" />
+              <form className={Styles.changePasswordForm} onSubmit={handleNewPasswordOnSubmit}>
                 <label>Nytt lösenord</label>
-                <input type="text" />
+                <input required name="newPassword" type="password" onChange={handleNewPasswordFormChange} />
                 <label>Repetera nytt lösenord</label>
-                <input type="text" />
+                <input required name="confirmNewPassword" type="password" onChange={handleNewPasswordFormChange}  />
+                <button type="submit">Ändra lösenord</button>
               </form>
-              <StyledButton textInput="Ändra Lösenord" colorInput="#F78632" />
             </div>
           </div>
         </div>
