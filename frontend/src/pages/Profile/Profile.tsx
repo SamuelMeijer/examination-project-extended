@@ -1,8 +1,7 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 import Styles from "./profile.module.css";
 
 import { FaUserAstronaut } from "react-icons/fa";
-import StyledButton from "../../components/StyledButton/StyledButton";
 
 // Importing hooks
 import {
@@ -27,16 +26,19 @@ export default function Profile() {
     loginFormReducer,
     initialLoginFormState
   );
+  const [loginErrorMessage, setLoginErrorMessage] = useState<string>('');
 
   const [registerFormState, registerFormStateDispatch] = useReducer(
     registerFormReducer,
     initialRegisterFormState
   );
+  const [registrationErrorMessage, setRegistrationErrorMessage] = useState<string>('');
 
   const [newPasswordFormState, newPasswordFormStateDispatch] = useReducer(
     newPasswordFormReducer,
     initialNewPasswordFormState
   );
+  const [newPasswordErrorMessage, setNewPasswordErrorMessage] = useState<string>('');
 
   const handleLoginFormChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -67,7 +69,6 @@ export default function Profile() {
       body: JSON.stringify(loginFormState),
     })
       .then((res) => {
-        // TODO: Handle bad requests (400 = Wrong identifier/password)
         if (!res.ok) {
           throw Error(res.statusText);
         } else {
@@ -77,7 +78,14 @@ export default function Profile() {
       .then((data) => {
         updateAuthenticatedUser(data);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        // Evalute if wrong combination of username and password was provided (Same as status === 400)
+        if(err.message === 'Bad Request') {
+          setLoginErrorMessage('Fel användarnamn eller lösenord')
+        } else {
+          setLoginErrorMessage('Något gick fel vid inloggningen')
+        }
+      });
   };
 
   const handleRegisterFormChange = (
@@ -114,7 +122,6 @@ export default function Profile() {
   const handleRegisterOnSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    // TODO: Add guard against whitespace and characters not allowed.
     // Guarding so that the provided passwords match
     if (
       registerFormState.userPassword === registerFormState.userPasswordRepeat
@@ -124,7 +131,8 @@ export default function Profile() {
         email: registerFormState.userEmail,
         password: registerFormState.userPassword,
       };
-
+      // Evalutates if blankspaces are included in any input
+      if (!reqBody.email.includes(' ') && !reqBody.username.includes(' ') && !reqBody.password.includes(' ')) {
       // Register the user with provided information.
       fetch("http://localhost:1337/api/auth/local/register", {
         method: "POST",
@@ -132,8 +140,6 @@ export default function Profile() {
         body: JSON.stringify(reqBody),
       })
         .then((res) => {
-          console.log(res);
-          // TODO: Handle bad requests (Username/email exists, wrong format etc.)
           if (!res.ok) {
             throw Error(res.statusText);
           } else {
@@ -143,10 +149,19 @@ export default function Profile() {
         .then((data) => {
           updateAuthenticatedUser(data);
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+        // Evalute if a user with username or email already exists (Same as status === 400)
+        if(err.message === 'Bad Request') {
+          setRegistrationErrorMessage('Användarnamn eller epost är upptagen')
+        } else {
+          setRegistrationErrorMessage('Något gick fel vid registrering')
+        }
+        });
+      } else {
+        setRegistrationErrorMessage('Blanksteg är inte tillåtna')
+      }
     } else {
-      // TODO: Add as message to user
-      console.log("Password doesnt match");
+      setRegistrationErrorMessage('Angivna lösenord matchar inte')
     }
   };
 
@@ -177,16 +192,19 @@ export default function Profile() {
       password: newPasswordFormState.password,
       confirmPassword: newPasswordFormState.confirmPassword
     };
-
-    // TODO: IMPORTANT!! PASSWORD NEED TO BE ATLEAST 6 CHARS or status === 400
+    
+    // IMPORTANT!! PASSWORD NEED TO BE ATLEAST 6 CHARS or status === 400
+    if (reqBody.password.length < 6) {
+      setNewPasswordErrorMessage('Lösenordet måste vara minst sex tecken långt')
+    } else if (reqBody.password !== reqBody.confirmPassword) {
+      setNewPasswordErrorMessage('Angivna lösenord matchar inte')
+    } else {
     fetch("http://localhost:1337/api/users/me", {
       method: "PUT",
       headers: { "Content-Type": "application/json", "Authorization": `Bearer ${authenticatedUser?.jwt}`},
       body: JSON.stringify(reqBody),
     })
       .then((res) => {
-        console.log('RES: ', res)
-        // TODO: Handle bad requests (400 = Wrong identifier/password)
         if (!res.ok) {
           throw Error(res.statusText);
         } else {
@@ -194,9 +212,13 @@ export default function Profile() {
         }
       })
       .then((data) => {
-        console.log(data);
+        setNewPasswordErrorMessage('Lösenordet uppdaterat')
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        setNewPasswordErrorMessage('Något gick fel')
+        console.error(err)
+      });
+    }
   };
 
   return (
@@ -205,7 +227,6 @@ export default function Profile() {
         <div>
           <div className={Styles.userInformationContainer}>
             <div className={Styles.colorDivider}>
-              {/* TODO: Make dynamic */}
               <h2>{authenticatedUser.user.username}</h2>
             </div>
 
@@ -218,7 +239,7 @@ export default function Profile() {
                   <br />
                   Registerad epost: {authenticatedUser.user.email}
                 </p>
-
+                            {/* TODO: Make dynamic */}
                 <p>
                   Statistik
                   <br />
@@ -250,12 +271,12 @@ export default function Profile() {
             </div>
             <div className={Styles.changePasswordContainer}>
               <h3>Vill du ändra lösenord?</h3>
-              {/* TODO: ADD REQUIRED DATA */}
+              {newPasswordErrorMessage.length > 0 ? <p> {newPasswordErrorMessage} </p> : null}
               <form className={Styles.changePasswordForm} onSubmit={handleNewPasswordOnSubmit}>
                 <label>Nytt lösenord</label>
-                <input required name="newPassword" type="password" onChange={handleNewPasswordFormChange} />
+                <input required minLength={6} name="newPassword" type="password" onChange={handleNewPasswordFormChange} />
                 <label>Repetera nytt lösenord</label>
-                <input required name="confirmNewPassword" type="password" onChange={handleNewPasswordFormChange}  />
+                <input required minLength={6} name="confirmNewPassword" type="password" onChange={handleNewPasswordFormChange}  />
                 <button type="submit">Ändra lösenord</button>
               </form>
             </div>
@@ -270,6 +291,7 @@ export default function Profile() {
 
             <div className={Styles.userInformationContent}>
               <div className={Styles.userInformationText}>
+                {loginErrorMessage.length > 0 ? <p>{loginErrorMessage}</p> : null}
                 <form
                   className={Styles.changePasswordForm}
                   onSubmit={handleLoginOnSubmit}
@@ -300,7 +322,7 @@ export default function Profile() {
             </div>
             <div className={Styles.changePasswordContainer}>
               <h3>Inte medlem? Registrerar dig här</h3>
-              {/* TODO: ADD REQUIRED DATA */}
+              {registrationErrorMessage.length > 0 ? <p> {registrationErrorMessage} </p>: null}
               <form
                 className={Styles.changePasswordForm}
                 onSubmit={handleRegisterOnSubmit}
