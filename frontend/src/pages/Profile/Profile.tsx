@@ -172,22 +172,17 @@ export default function Profile() {
 
   const handleNewPasswordOnSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-
+    
     const reqBody = {
-      password: 'jullov',
-      confirmPassword: 'Ost'
+      password: newPasswordFormState.password,
+      confirmPassword: newPasswordFormState.confirmPassword
     };
 
-    // console.log('Newpassword: ', newPasswordFormState)
-    // console.log('authJWT: ', authenticatedUser?.jwt)
-
+    // TODO: IMPORTANT!! PASSWORD NEED TO BE ATLEAST 6 CHARS or status === 400
     fetch("http://localhost:1337/api/users/me", {
       method: "PUT",
       headers: { "Content-Type": "application/json", "Authorization": `Bearer ${authenticatedUser?.jwt}`},
-      body: JSON.stringify({
-        password: "hejvakul",
-        confirmPassword: "hejvakul"
-      }),
+      body: JSON.stringify(reqBody),
     })
       .then((res) => {
         console.log('RES: ', res)
