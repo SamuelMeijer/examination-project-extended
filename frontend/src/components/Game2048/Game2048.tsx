@@ -7,6 +7,8 @@ import Tile from "./Tile/Tile";
 import { TileInterface } from "./Tile/models/Tile";
 // Importing utils
 import { startNewGame, handleMovement } from "./gameLogic/gameLogic";
+// Importing hooks
+import { useAuthenticatedUser } from "../../hooks/authenticatedUserHook";
 
 // TODO: Move scoreboard reducer and interface!
 type SCOREBOARD_ACTIONTYPE =
@@ -37,8 +39,30 @@ export interface gameStatusInterface {
   message: string
 }
 
+interface highScoreInterface {
+  attributes: {
+    username: string;
+    points: number;
+    moves: number;
+    didWin: boolean;
+  };
+  id: number;
+}
+
 // TODO: Add logic for user being logged in or not
 export default function Game2048() {
+  const authenticatedUser = useAuthenticatedUser();
+  const playerHiscoreInitialValue = {
+    attributes: {
+      username: "",
+      points: 0,
+      moves: 0,
+      didWin: false,
+    },
+    id: 0,
+  };
+  const [playerHighscore, setPlayerHighscore] = useState<highScoreInterface>(playerHiscoreInitialValue);
+
   const [gameStatus, _setGameStatus] = useState<gameStatusInterface>({isRunning: false, message: 'Starta ett nytt spel'});
   const [tileList, _setTileList] = useState<TileInterface[]>([]);
   const [preventMovement, _setPreventMovement] = useState<boolean>(false);
@@ -141,13 +165,116 @@ export default function Game2048() {
 
   useEffect(() => {
     if (gameStatusRef.current.isRunning) {
+      // Adding eventlistener to enable playing the game
       window.addEventListener("keyup", handleKeyUp, true);
     } else {
+      // Evalutating if game is not running because the player won or lost and a user is logged in
+      if ((gameStatusRef.current.message === 'DU VANN!' && authenticatedUser) || (gameStatusRef.current.message === 'Du förlorade!' && authenticatedUser)) {
+        // User already exists in the highscore -> Update
+        if (playerHighscore.attributes.username.length > 0) {
+          
+          // TODO: Add evaluation if score is better or worse, better -> update highscore
+          // UPDATE -> FETCH (OM BÄTTRE SCORE)
+          const didPlayerWin = gameStatusRef.current.message === 'DU VANN!'
+
+          const reqBody = {
+            username: authenticatedUser.user.username,
+            points: scoreBoard.score,
+            moves: scoreBoard.moves,
+            didWin: didPlayerWin
+          }
+  
+          fetch(`http://localhost:1337/api/highscores/${playerHighscore.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authenticatedUser?.jwt}`,
+          },
+          body: JSON.stringify({data: reqBody}),
+        })
+          .then((res) => {
+            if (!res.ok) {
+              throw Error(res.statusText);
+            } else {
+              return res.json();
+            }
+          })
+          .then((data) => {
+            // TODO: UPPDATERA PLAYERHIGHSCORE
+            console.log('Score uppdaterad')
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+
+          
+        } else {
+          // User does not already exist in highscore -> Add
+          const didPlayerWin = gameStatusRef.current.message === 'DU VANN!'
+
+          const reqBody = {
+            username: authenticatedUser.user.username,
+            points: scoreBoard.score,
+            moves: scoreBoard.moves,
+            didWin: didPlayerWin
+          }
+  
+          fetch(`http://localhost:1337/api/highscores`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authenticatedUser?.jwt}`,
+          },
+          body: JSON.stringify({data: reqBody}),
+        })
+          .then((res) => {
+            if (!res.ok) {
+              throw Error(res.statusText);
+            } else {
+              return res.json();
+            }
+          })
+          .then((data) => {
+            // TODO: UPPDATERA PLAYERHIGHSCORE
+            console.log('Score tillagd')
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+        }
+        
+      }
+
       // Currently not working -> Stoping event from executing instead.
       window.removeEventListener("keyup", handleKeyUp, true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStatusRef.current]);
+
+  useEffect(() => {
+    // Fetching highscorelist
+    fetch("http://localhost:1337/api/highscores")
+      .then((res) => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        } else {
+          return res.json();
+        }
+      })
+      .then((data) => {
+        // Check if the authenticated user is included
+        const userHighScore = data.data.find(
+          (element: any) =>
+            element.attributes.username === authenticatedUser?.user.username
+        );
+
+        if (userHighScore) {
+          setPlayerHighscore(userHighScore);
+        }
+      })
+      .catch((err) => console.error(err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={Styles.gameContainer}>

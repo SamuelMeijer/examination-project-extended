@@ -4,32 +4,33 @@ import Styles from "./game.module.css";
 import Game2048 from "../../components/Game2048/Game2048";
 
 // Importing hooks
-import {
-  useAuthenticatedUser
-} from "../../hooks/authenticatedUserHook";
+import { useAuthenticatedUser } from "../../hooks/authenticatedUserHook";
 
 interface highScoreInterface {
   attributes: {
-    username: string,
-    points: number,
-    moves: number,
-    didWin: boolean,
-  },
-  id: number,
+    username: string;
+    points: number;
+    moves: number;
+    didWin: boolean;
+  };
+  id: number;
 }
 
+// TODO: NEED THIS COMPONENT TO REFRESH ONCE HIGHSCORE IS UPDATED FOR USER
 export default function Game() {
   const authenticatedUser = useAuthenticatedUser();
 
-  const [highscoreList, setHighscoreList] = useState<highScoreInterface[]>([])
-  const [topFiveHighscore, setTopFiveHighscoreList] = useState<highScoreInterface[]>([])
-  const [playerHighscore, setPlayerHighscore] = useState<highScoreInterface>({attributes: {
-    username: '',
-    points: 0,
-    moves: 0,
-    didWin: false,
-  },
-  id: 0,})
+  const [topFiveHighscore, setTopFiveHighscoreList] = useState<highScoreInterface[]>([]);
+  const playerHiscoreInitialValue = {
+    attributes: {
+      username: "",
+      points: 0,
+      moves: 0,
+      didWin: false,
+    },
+    id: 0,
+  };
+  const [playerHighscore, setPlayerHighscore] = useState<highScoreInterface>(playerHiscoreInitialValue);
 
   useEffect(() => {
     // Fetching highscorelist
@@ -43,18 +44,23 @@ export default function Game() {
       })
       .then((data) => {
         // Check if the authenticated user is included
-        const userHighScore = data.data.find((element: any) => element.attributes.username === authenticatedUser?.user.username)
+        const userHighScore = data.data.find(
+          (element: any) =>
+            element.attributes.username === authenticatedUser?.user.username
+        );
 
         if (userHighScore) {
-          setPlayerHighscore(userHighScore)
+          setPlayerHighscore(userHighScore);
         }
-        const topFive = data.data.filter((element: any, index: number) => index < 5)
-        setTopFiveHighscoreList(topFive)
-        setHighscoreList(data.data)
+        const topFive = data.data.filter(
+          (element: any, index: number) => index < 5
+        );
+        // TODO: SORT BY SCORE / DIDWIN
+        setTopFiveHighscoreList(topFive);
       })
       .catch((err) => console.error(err));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <section className={Styles.gameContentContainer}>
@@ -92,49 +98,59 @@ export default function Game() {
           <h2>Highscore</h2>
         </div>
         <h3 className={Styles.playerHighscoreTitle}>Din bästa omgång</h3>
-          { authenticatedUser ?
-            <div className={Styles.playerHighscore}>
-              <div className={Styles.scoreBoardPoints}>
-                <h3>Poäng</h3>
-                <p>{playerHighscore.attributes.points ? playerHighscore.attributes.points : 0}</p>
-              </div>
-              <div className={Styles.scoreBoardPoints}>
-                <h3>Drag</h3>
-                <p>{playerHighscore.attributes.moves ? playerHighscore.attributes.moves : 0}</p>
-              </div>
+        {authenticatedUser ? (
+          <div className={Styles.playerHighscore}>
+            <div className={Styles.scoreBoardPoints}>
+              <h3>Poäng</h3>
+              <p>
+                {playerHighscore.attributes.points
+                  ? playerHighscore.attributes.points
+                  : 0}
+              </p>
             </div>
-          :
-            <div className={Styles.playerHighscore}>
-              <div className={Styles.scoreBoardPoints}>
-                <p>Du är inte inloggad</p>
-              </div>
+            <div className={Styles.scoreBoardPoints}>
+              <h3>Drag</h3>
+              <p>
+                {playerHighscore.attributes.moves
+                  ? playerHighscore.attributes.moves
+                  : 0}
+              </p>
             </div>
-          }
+          </div>
+        ) : (
+          <div className={Styles.playerHighscore}>
+            <div className={Styles.scoreBoardPoints}>
+              <p>Du är inte inloggad</p>
+            </div>
+          </div>
+        )}
       </div>
 
-        <div className={Styles.highscoreListContainer}>
-            <table className={Styles.highscoreList}>
-              <thead>
-                <tr>
-                  <th>Namn</th>
-                  <th>Poäng</th>
-                  <th>Rörelser</th>
+      <div className={Styles.highscoreListContainer}>
+        <table className={Styles.highscoreList}>
+          <thead>
+            <tr>
+              <th>Namn</th>
+              <th>Poäng</th>
+              <th>Rörelser</th>
+            </tr>
+          </thead>
+          <tbody>
+            {/* Adding data top5 data from highscore */}
+            {topFiveHighscore.map((element, index) => {
+              return (
+                <tr key={index}>
+                  <td>
+                    {index + 1}. {element.attributes.username}
+                  </td>
+                  <td>{element.attributes.points}</td>
+                  <td>{element.attributes.moves}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {/* Adding data top5 data from highscore */}
-                {topFiveHighscore.map((element, index) => {
-                  return (
-                    <tr key={index}>
-                      <td>{index + 1}. {element.attributes.username}</td>
-                      <td>{element.attributes.points}</td>
-                      <td>{element.attributes.moves}</td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-        </div>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </section>
   );
 }
