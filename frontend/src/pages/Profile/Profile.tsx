@@ -362,13 +362,12 @@ export default function Profile() {
               <h2>Logga in</h2>
             </div>
 
-            <div className={Styles.userInformationContent}>
-              <div className={Styles.userInformationText}>
+            <div className={Styles.userLoginContainer}>
+              <div className={Styles.userLoginInformation}>
                 {loginErrorMessage.length > 0 ? (
-                  <p>{loginErrorMessage}</p>
+                  <h3>{loginErrorMessage}</h3>
                 ) : null}
                 <form
-                  className={Styles.changePasswordForm}
                   onSubmit={handleLoginOnSubmit}
                 >
                   <label>Ange användarnamn eller epost</label>
@@ -396,9 +395,9 @@ export default function Profile() {
               <h2>Registrera dig</h2>
             </div>
             <div className={Styles.changePasswordContainer}>
-              <h3>Inte medlem? Registrerar dig här</h3>
+              <h3 className={Styles.changePasswordTitle}>Inte medlem? Registrerar dig här</h3>
               {registrationErrorMessage.length > 0 ? (
-                <p> {registrationErrorMessage} </p>
+                <h3> {registrationErrorMessage} </h3>
               ) : null}
               <form
                 className={Styles.changePasswordForm}

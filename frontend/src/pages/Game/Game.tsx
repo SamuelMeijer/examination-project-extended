@@ -66,7 +66,7 @@ export default function Game() {
         </div>
       </div>
 
-      <div className={Styles.highscoreContainer}>
+      <div className={Styles.highscoreListContainer}>
         <div className={Styles.colorDivider}>
           <h2>Highscore</h2>
         </div>
@@ -74,7 +74,7 @@ export default function Game() {
         {authenticatedUser ? (
           <div className={Styles.playerHighscore}>
             {authenticatedUserHighscore ? (
-              <div>
+              <div className={Styles.playerHighscoreContent}>
                 <div className={Styles.scoreBoardPoints}>
                   <h3>Poäng</h3>
                   <p>
@@ -89,7 +89,7 @@ export default function Game() {
                 </div>
               </div>
             ) : ( 
-              <div>
+              <div className={Styles.playerHighscoreContent}>
               <div className={Styles.scoreBoardPoints}>
                 <h3>Poäng</h3>
                 <p>
@@ -106,10 +106,8 @@ export default function Game() {
             )}
           </div>
         ) : (
-          <div className={Styles.playerHighscore}>
-            <div className={Styles.scoreBoardPoints}>
-              <p>Du är inte inloggad</p>
-            </div>
+          <div className={Styles.playerHighscoreContent}>
+              <h3>Du är inte inloggad</h3>
           </div>
         )}
       </div>
@@ -121,6 +119,7 @@ export default function Game() {
               <th>Namn</th>
               <th>Poäng</th>
               <th>Rörelser</th>
+              <th>2048</th>
             </tr>
           </thead>
           <tbody>
@@ -133,6 +132,8 @@ export default function Game() {
                   </td>
                   <td>{element.attributes.points}</td>
                   <td>{element.attributes.moves}</td>
+                  {element.attributes.didWin? <td>Ja</td> : <td>Nej</td>}
+                  
                 </tr>
               );
             })}
