@@ -15,8 +15,15 @@ export default function Game() {
   const [topFiveHighscore, setTopFiveHighscoreList] = useState<highScoreInterface[]>([]);
 
   useEffect(() => {
+    // qs = querystring
+    const qs = require('qs');
+    // Sorting the results by the value of didWin, if two or more users has the same value on 'didWin' sort by highest points
+    const query = qs.stringify({
+      sort: ['didWin:desc', 'points:desc']
+    })
+
     // Fetching highscorelist
-    fetch("http://localhost:1337/api/highscores")
+    fetch(`http://localhost:1337/api/highscores?${query}`)
       .then((res) => {
         if (!res.ok) {
           throw Error(res.statusText);
@@ -28,7 +35,6 @@ export default function Game() {
         const topFive = data.data.filter(
           (element: any, index: number) => index < 5
         );
-        // TODO: SORT BY SCORE / DIDWIN
         setTopFiveHighscoreList(topFive);
       })
       .catch((err) => console.error(err));
