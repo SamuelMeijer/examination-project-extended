@@ -10,6 +10,7 @@ import {
   useUpdateAuthenticatedUser,
 } from "../../hooks/authenticatedUserHook";
 import {
+  useAuthenticatedUserHighscore,
   useUpdateAuthenticatedUserHighscore,
 } from "../../hooks/authenticatedUserHighscoreHook";
 import {
@@ -28,6 +29,7 @@ import {
 export default function Profile() {
   const authenticatedUser = useAuthenticatedUser();
   const updateAuthenticatedUser = useUpdateAuthenticatedUser();
+  const authenticatedUserHighscore = useAuthenticatedUserHighscore()
   const updateAuthenticatedUserHighscore = useUpdateAuthenticatedUserHighscore()
 
   const [loginFormState, loginFormStateDispatch] = useReducer(
@@ -284,32 +286,34 @@ export default function Profile() {
 
             <div className={Styles.userInformationContent}>
               <div className={Styles.userInformationText}>
+                <h3>
+                  Din information
+                </h3>
                 <p>
-                  Din information:
+                  Användarnamn: <b>{authenticatedUser.user.username}</b>
                   <br />
-                  Användarnamn: {authenticatedUser.user.username}
-                  <br />
-                  Registerad epost: {authenticatedUser.user.email}
+                  Registerad epost: <b>{authenticatedUser.user.email}</b>
                 </p>
-                {/* TODO: Make dynamic */}
-                <p>
-                  Statistik
-                  <br />
+                <h3>
                   Din bästa spelomgång
-                  <br />
-                  Poäng: 1337
-                  <br />
-                  Antal drag: 12
-                </p>
-
-                <p>
-                  Antal spelade omgångar: 24
-                  <br />
-                  Antal spel med 2048: 0
-                </p>
-
-                <p>Tillgänglig webbshopkredit: 4 π</p>
-                {/* TODO: Add logout-functionality */}
+                </h3>
+                  {authenticatedUserHighscore ? 
+                    <p>
+                    Poäng: <b>{authenticatedUserHighscore.attributes.points}</b>
+                    <br />
+                    Antal drag: <b>{authenticatedUserHighscore.attributes.moves}</b>
+                    <br />
+                    Har fått 2048: <b>{authenticatedUserHighscore.attributes.didWin ? "Ja!": "Nej"}</b>
+                    </p>
+                  :
+                    <p>
+                    Poäng: 0
+                    <br />
+                    Antal drag: 0
+                    <br />
+                    Har fått 2048: Nej
+                    </p>
+                  }
               </div>
               <div className={Styles.userPictureContainer}>
                 <FaUserAstronaut fontSize="150px" />
