@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "Order",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "shopitems": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::shopitem.shopitem",
+      "inversedBy": "orders"
+    },
+    "username": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    }
+  }
+}

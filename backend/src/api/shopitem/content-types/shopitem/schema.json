@@ -17,10 +17,6 @@
       "required": true,
       "unique": true
     },
-    "price": {
-      "type": "integer",
-      "required": true
-    },
     "shortDescription": {
       "type": "string",
       "required": true,
@@ -31,14 +27,11 @@
       "required": true,
       "unique": true
     },
-    "size": {
-      "type": "enumeration",
-      "enum": [
-        "Small",
-        "Medium",
-        "Large"
-      ],
-      "required": false
+    "orders": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::order.order",
+      "mappedBy": "shopitems"
     }
   }
 }
