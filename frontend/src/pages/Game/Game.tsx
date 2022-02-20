@@ -5,32 +5,14 @@ import Game2048 from "../../components/Game2048/Game2048";
 
 // Importing hooks
 import { useAuthenticatedUser } from "../../hooks/authenticatedUserHook";
-
-interface highScoreInterface {
-  attributes: {
-    username: string;
-    points: number;
-    moves: number;
-    didWin: boolean;
-  };
-  id: number;
-}
+import { useAuthenticatedUserHighscore, highScoreInterface } from '../../hooks/authenticatedUserHighscoreHook'
 
 // TODO: NEED THIS COMPONENT TO REFRESH ONCE HIGHSCORE IS UPDATED FOR USER
 export default function Game() {
   const authenticatedUser = useAuthenticatedUser();
+  const authenticatedUserHighscore = useAuthenticatedUserHighscore();
 
   const [topFiveHighscore, setTopFiveHighscoreList] = useState<highScoreInterface[]>([]);
-  const playerHiscoreInitialValue = {
-    attributes: {
-      username: "",
-      points: 0,
-      moves: 0,
-      didWin: false,
-    },
-    id: 0,
-  };
-  const [playerHighscore, setPlayerHighscore] = useState<highScoreInterface>(playerHiscoreInitialValue);
 
   useEffect(() => {
     // Fetching highscorelist
@@ -43,15 +25,6 @@ export default function Game() {
         }
       })
       .then((data) => {
-        // Check if the authenticated user is included
-        const userHighScore = data.data.find(
-          (element: any) =>
-            element.attributes.username === authenticatedUser?.user.username
-        );
-
-        if (userHighScore) {
-          setPlayerHighscore(userHighScore);
-        }
         const topFive = data.data.filter(
           (element: any, index: number) => index < 5
         );
@@ -100,22 +73,37 @@ export default function Game() {
         <h3 className={Styles.playerHighscoreTitle}>Din bästa omgång</h3>
         {authenticatedUser ? (
           <div className={Styles.playerHighscore}>
-            <div className={Styles.scoreBoardPoints}>
-              <h3>Poäng</h3>
-              <p>
-                {playerHighscore.attributes.points
-                  ? playerHighscore.attributes.points
-                  : 0}
-              </p>
+            {authenticatedUserHighscore ? (
+              <div>
+                <div className={Styles.scoreBoardPoints}>
+                  <h3>Poäng</h3>
+                  <p>
+                    {authenticatedUserHighscore.attributes.points}
+                  </p>
+                </div>
+                <div className={Styles.scoreBoardPoints}>
+                  <h3>Drag</h3>
+                  <p>
+                    {authenticatedUserHighscore.attributes.moves}
+                  </p>
+                </div>
+              </div>
+            ) : ( 
+              <div>
+              <div className={Styles.scoreBoardPoints}>
+                <h3>Poäng</h3>
+                <p>
+                  0
+                </p>
+              </div>
+              <div className={Styles.scoreBoardPoints}>
+                <h3>Drag</h3>
+                <p>
+                  0
+                </p>
+              </div>
             </div>
-            <div className={Styles.scoreBoardPoints}>
-              <h3>Drag</h3>
-              <p>
-                {playerHighscore.attributes.moves
-                  ? playerHighscore.attributes.moves
-                  : 0}
-              </p>
-            </div>
+            )}
           </div>
         ) : (
           <div className={Styles.playerHighscore}>

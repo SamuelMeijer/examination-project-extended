@@ -13,6 +13,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Header from "./components/Header/Header";
 // Importing AuthenticatedUser hook
 import AuthenticatedUserProvider from "./hooks/authenticatedUserHook";
+import AuthenticatedUserHighscoreProvider from "./hooks/authenticatedUserHighscoreHook";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
 
       <main className="mainContainer">
         <AuthenticatedUserProvider>
+        <AuthenticatedUserHighscoreProvider>
           <Routes>
             <Route path="/" element={<Navigate to="/home" />} />
             <Route path="/home" element={<Home />} />
@@ -30,6 +32,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="*" element={<NoSuchPage />} />
           </Routes>
+        </AuthenticatedUserHighscoreProvider>
         </AuthenticatedUserProvider>
       </main>
     </div>

@@ -9,6 +9,7 @@ import { TileInterface } from "./Tile/models/Tile";
 import { startNewGame, handleMovement } from "./gameLogic/gameLogic";
 // Importing hooks
 import { useAuthenticatedUser } from "../../hooks/authenticatedUserHook";
+import { useAuthenticatedUserHighscore, useUpdateAuthenticatedUserHighscore } from "../../hooks/authenticatedUserHighscoreHook";
 
 // TODO: Move scoreboard reducer and interface!
 type SCOREBOARD_ACTIONTYPE =
@@ -39,29 +40,11 @@ export interface gameStatusInterface {
   message: string
 }
 
-interface highScoreInterface {
-  attributes: {
-    username: string;
-    points: number;
-    moves: number;
-    didWin: boolean;
-  };
-  id: number;
-}
-
 // TODO: Add logic for user being logged in or not
 export default function Game2048() {
   const authenticatedUser = useAuthenticatedUser();
-  const playerHiscoreInitialValue = {
-    attributes: {
-      username: "",
-      points: 0,
-      moves: 0,
-      didWin: false,
-    },
-    id: 0,
-  };
-  const [playerHighscore, setPlayerHighscore] = useState<highScoreInterface>(playerHiscoreInitialValue);
+  const authenticatedUserHighscore = useAuthenticatedUserHighscore();
+  const updateAuthenticatedUserHighscore = useUpdateAuthenticatedUserHighscore();
 
   const [gameStatus, _setGameStatus] = useState<gameStatusInterface>({isRunning: false, message: 'Starta ett nytt spel'});
   const [tileList, _setTileList] = useState<TileInterface[]>([]);
@@ -171,10 +154,8 @@ export default function Game2048() {
       // Evalutating if game is not running because the player won or lost and a user is logged in
       if ((gameStatusRef.current.message === 'DU VANN!' && authenticatedUser) || (gameStatusRef.current.message === 'Du förlorade!' && authenticatedUser)) {
         // User already exists in the highscore -> Update
-        if (playerHighscore.attributes.username.length > 0) {
-          
+        if (authenticatedUserHighscore) {
           // TODO: Add evaluation if score is better or worse, better -> update highscore
-          // UPDATE -> FETCH (OM BÄTTRE SCORE)
           const didPlayerWin = gameStatusRef.current.message === 'DU VANN!'
 
           const reqBody = {
@@ -184,7 +165,7 @@ export default function Game2048() {
             didWin: didPlayerWin
           }
   
-          fetch(`http://localhost:1337/api/highscores/${playerHighscore.id}`, {
+          fetch(`http://localhost:1337/api/highscores/${authenticatedUserHighscore.id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -200,8 +181,8 @@ export default function Game2048() {
             }
           })
           .then((data) => {
-            // TODO: UPPDATERA PLAYERHIGHSCORE
-            console.log('Score uppdaterad')
+            console.log('Score uppdaterad: ', data.data)
+            updateAuthenticatedUserHighscore(data.data)
           })
           .catch((err) => {
             console.error(err);
@@ -236,7 +217,8 @@ export default function Game2048() {
           })
           .then((data) => {
             // TODO: UPPDATERA PLAYERHIGHSCORE
-            console.log('Score tillagd')
+            console.log('Score tillagd: ', data.data)
+            updateAuthenticatedUserHighscore(data.data)
           })
           .catch((err) => {
             console.error(err);
@@ -250,31 +232,6 @@ export default function Game2048() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStatusRef.current]);
-
-  useEffect(() => {
-    // Fetching highscorelist
-    fetch("http://localhost:1337/api/highscores")
-      .then((res) => {
-        if (!res.ok) {
-          throw Error(res.statusText);
-        } else {
-          return res.json();
-        }
-      })
-      .then((data) => {
-        // Check if the authenticated user is included
-        const userHighScore = data.data.find(
-          (element: any) =>
-            element.attributes.username === authenticatedUser?.user.username
-        );
-
-        if (userHighScore) {
-          setPlayerHighscore(userHighScore);
-        }
-      })
-      .catch((err) => console.error(err));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div className={Styles.gameContainer}>

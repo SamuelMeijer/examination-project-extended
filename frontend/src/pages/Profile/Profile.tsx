@@ -5,9 +5,13 @@ import { FaUserAstronaut } from "react-icons/fa";
 
 // Importing hooks
 import {
+  authenticatedInterface,
   useAuthenticatedUser,
   useUpdateAuthenticatedUser,
 } from "../../hooks/authenticatedUserHook";
+import {
+  useUpdateAuthenticatedUserHighscore,
+} from "../../hooks/authenticatedUserHighscoreHook";
 import {
   initialLoginFormState,
   loginFormReducer,
@@ -24,6 +28,7 @@ import {
 export default function Profile() {
   const authenticatedUser = useAuthenticatedUser();
   const updateAuthenticatedUser = useUpdateAuthenticatedUser();
+  const updateAuthenticatedUserHighscore = useUpdateAuthenticatedUserHighscore()
 
   const [loginFormState, loginFormStateDispatch] = useReducer(
     loginFormReducer,
@@ -44,6 +49,36 @@ export default function Profile() {
   );
   const [newPasswordErrorMessage, setNewPasswordErrorMessage] =
     useState<string>("");
+
+
+    const fetchUserHighscore = (user: authenticatedInterface) => {
+      // qs = querystring
+      const qs = require('qs');
+
+      // Filtering by authenticatedUser username
+      const query = qs.stringify({
+        filters: {
+          username: {
+            $eq: user.user.username
+          }
+        }
+      })
+
+      // Fetching highscorelist for user
+      fetch(`http://localhost:1337/api/highscores?${query}`)
+        .then((res) => {
+          if (!res.ok) {
+            throw Error(res.statusText);
+          } else {
+            return res.json();
+          }
+        })
+        .then((data) => {
+          if (data.data) {
+            updateAuthenticatedUserHighscore(data.data[0]);
+          }
+      })
+    }
 
   const handleLoginFormChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -81,6 +116,7 @@ export default function Profile() {
         }
       })
       .then((data) => {
+        fetchUserHighscore(data)
         updateAuthenticatedUser(data);
       })
       .catch((err) => {
