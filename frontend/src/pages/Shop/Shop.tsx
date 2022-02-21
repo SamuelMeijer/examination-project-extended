@@ -146,10 +146,7 @@ export default function Shop() {
             <div
               className={`${Styles.innerContentContainer} ${Styles.innerRight}`}
             >
-              {/* {TODO: ADD IMAGE} */}
-              <p>
-                PLACE IMAGE HERE
-              </p>
+              <img src="http://localhost:1337/uploads/matteklubbentryck_208114153e.png" alt="T-Shirt with Matteklubbenprint" className={Styles.productImage}/>
               {purchaseMessage? <h3>{purchaseMessage}</h3> : null}
               <button onClick={handleOnClick}>
                 Beställ
