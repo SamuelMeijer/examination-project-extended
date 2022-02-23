@@ -166,18 +166,19 @@ export default function Shop() {
                 <h2>Framtiden</h2>
               </div>
               <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, necessitatibus.
+              För att kunna beställa varan måste du vara inloggad och vinna en spelomgång av 2048.
               </p>
               <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, necessitatibus.
+              Erbjudandet är för tillfället begränsat till en vara per användare.
+              Vi planerar för att i framtiden öka antalet beställbara produkter, både vad gäller mängden beställningar per användare som mängden tillgängliga produkter i webbshopen.
               </p>
             </div>
 
             <div
               className={`${Styles.innerContentContainer} ${Styles.innerRight}`}
             >
-              <p>Lorem ipsum dolor sit amet.</p> 
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis eligendi excepturi ea aut minus blanditiis saepe numquam vel neque accusantium.</p>
+              <p>Projektet är nystartat och vi beklagar därför det begränsade utbudet</p> 
+              <p>När du beställer registreras den epost som är kopplat till din användarkonto. Vi kommer vid ett senare tillfälle kontkata dig via epost för att ge dig möjliheten att ange storlek och adress.</p>
               <div className={Styles.colorDivider} />
             </div>
       </section>

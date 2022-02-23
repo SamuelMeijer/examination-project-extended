@@ -12,39 +12,28 @@ export default function Home() {
             <h2>Om oss...</h2>
           </div>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-            maximus enim eget metus lacinia, sed ultrices mi efficitur.
-            Phasellus tortor elit, semper in placerat vitae, dictum eget arcu.
+          Matteklubben är en intresseförening för personer med ett brinnande intresse för matematik och logisk problemlösning.<br/> 
+          Föreningen är liten i storlek och omfattar i dagsläget enbart ett femtiotal medlemmar runt om i Sverige.
           </p>
           <p>
-            In vitae placerat massa. Nullam dui ex, commodo sed neque id, ornare
-            suscipit nunc. Curabitur egestas dignissim luctus. Sed aliquet
-            tincidunt quam, euismod ultrices dolor lobortis ut. Vestibulum ante
-            ipsum primis in faucibus orci luctus et ultrices posuere cubilia
-            curae;
+            Föreningen drivs helt ideellt och har som enda syfte att föra samman matteintresserade individer
           </p>
           <p>
-            Nunc blandit dui eget lacus rhoncus, id lacinia lorem pharetra.
-            Donec sollicitudin molestie magna, in iaculis lacus facilisis nec.
-            Duis sollicitudin gravida purus. Vivamus lacinia id lectus vitae
-            tincidunt. Nunc vitae vestibulum dui.Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit.
+            Vi grundades för snart 20 år sedan och kände att vårt jubileum är ett ypperligt tillfälle att ta klivet in i den digitala eran.
           </p>
-          <p>Quisque maximus enim eget metus lacinia, sed ultrices mi.</p>
+          <p>Vi är glada över att du hittade hit!</p>
         </div>
 
         <div className={`${Styles.innerContentContainer} ${Styles.innerRight}`}>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-            maximus enim eget metus lacinia, sed ultrices mi efficitur.
-            Phasellus tortor elit, semper in placerat vitae, dictum eget arcu.
+            Hemsidan är fortfarande i sin linda men är i framtiden tänkt att fungera som en samlingsplats för våra medlemmar.<br/>
+            Vi planerar för att öppna ett forum där diverse matterelaterade diskusioner kan hållas.
           </p>
           <p>
-            In vitae placerat massa. Nullam dui ex, commodo sed neque id, ornare
-            suscipit nunc. Curabitur egestas dignissim luctus. Sed aliquet
-            tincidunt quam, euismod ultrices dolor lobortis ut. Vestibulum ante
-            ipsum primis in faucibus orci luctus et ultrices posuere cubilia
-            curae;
+            Är du en matematikintresserad individ?<br/> 
+            Gillar du logiskt tänkande och problemlösning?<br/>
+            Då har du hittat rätt!<br/> 
+            Med ett knapptryck kan du bli en del av gemenskapen!
           </p>
           <StyledButton textInput="Bli Medlem" colorInput="#F78632" pathName="profile"/>
           <div className={Styles.colorDivider} />
@@ -54,42 +43,31 @@ export default function Home() {
       <section className={`${Styles.contentBoxContainer} ${Styles.midContent}`}>
         <div className={`${Styles.innerContentContainer} ${Styles.innerLeft}`}>
           <div className={Styles.colorDivider}>
-            <h2>Om oss...</h2>
+            <h2>2048</h2>
           </div>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-            maximus enim eget metus lacinia, sed ultrices mi efficitur.
-            Phasellus tortor elit, semper in placerat vitae, dictum eget arcu.
+            Här kan du spela våra medlemmars favoritspel, 2048!
           </p>
           <p>
-            In vitae placerat massa. Nullam dui ex, commodo sed neque id, ornare
-            suscipit nunc. Curabitur egestas dignissim luctus. Sed aliquet
-            tincidunt quam, euismod ultrices dolor lobortis ut. Vestibulum ante
-            ipsum primis in faucibus orci luctus et ultrices posuere cubilia
-            curae;
+            2048  är ett pusselspel med en spelplan bestående av totalt 16 rutor i mönstret 4x4.<br/>
+            Vid spelstart blir två slumpmässigt valda rutor tilldelade spelbrickor med värdet två.<br/>
+            
           </p>
           <p>
-            Nunc blandit dui eget lacus rhoncus, id lacinia lorem pharetra.
-            Donec sollicitudin molestie magna, in iaculis lacus facilisis nec.
-            Duis sollicitudin gravida purus. Vivamus lacinia id lectus vitae
-            tincidunt. Nunc vitae vestibulum dui.Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit.
+            Spelaren väljer en riktning och alla spelbrickor flyttas så långt åt den riktningen på spelplanen som det går tills de antingen stoppas av spelplanens kant eller en annan spelbricka.
           </p>
-          <p>Quisque maximus enim eget metus lacinia, sed ultrices mi.</p>
+          <p>Om två spelbrickor med samma värde krockar slås de ihop<br/>
+          En spelbricka kan enbart slås ihop en gång i samma rörelse.</p>
         </div>
 
         <div className={`${Styles.innerContentContainer} ${Styles.innerRight}`}>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-            maximus enim eget metus lacinia, sed ultrices mi efficitur.
-            Phasellus tortor elit, semper in placerat vitae, dictum eget arcu.
+          Efter att alla spelbrickor flyttats så långt de kan och eventuella hopslagningar skett genereras en ny spelbricka med värdet två på en tom ruta på spelplanen.<br/>
+          Spelaren får återigen välja en riktning alla spelbrickor ska flyttas.
           </p>
           <p>
-            In vitae placerat massa. Nullam dui ex, commodo sed neque id, ornare
-            suscipit nunc. Curabitur egestas dignissim luctus. Sed aliquet
-            tincidunt quam, euismod ultrices dolor lobortis ut. Vestibulum ante
-            ipsum primis in faucibus orci luctus et ultrices posuere cubilia
-            curae;
+          Om en spelbricka får värdet 2048 har spelaren vunnit.<br/> 
+          Om inga tomma rutor finns när en ny bricka kan genereras och inga tillgängliga hopslagningar finns har spelaren förlorat.
           </p>
           <StyledButton textInput="Spela 2048" colorInput="#FFC66C" pathName="game"/>
           <div className={Styles.colorDivider} />
@@ -99,42 +77,26 @@ export default function Home() {
       <section className={`${Styles.contentBoxContainer} ${Styles.botContent}`}>
         <div className={`${Styles.innerContentContainer} ${Styles.innerLeft}`}>
           <div className={Styles.colorDivider}>
-            <h2>Om oss...</h2>
+            <h2>Webbshop</h2>
           </div>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-            maximus enim eget metus lacinia, sed ultrices mi efficitur.
-            Phasellus tortor elit, semper in placerat vitae, dictum eget arcu.
+            Missa inte chansen!
           </p>
           <p>
-            In vitae placerat massa. Nullam dui ex, commodo sed neque id, ornare
-            suscipit nunc. Curabitur egestas dignissim luctus. Sed aliquet
-            tincidunt quam, euismod ultrices dolor lobortis ut. Vestibulum ante
-            ipsum primis in faucibus orci luctus et ultrices posuere cubilia
-            curae;
+            Under en begränsad tidsperiod kommer Matteklubben erbjuda sina skickligaste medlemmar möjliheten att beställa häftiga kläder.
           </p>
           <p>
-            Nunc blandit dui eget lacus rhoncus, id lacinia lorem pharetra.
-            Donec sollicitudin molestie magna, in iaculis lacus facilisis nec.
-            Duis sollicitudin gravida purus. Vivamus lacinia id lectus vitae
-            tincidunt. Nunc vitae vestibulum dui.Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit.
+            Allt du behöver göra är att registrera dig på hemsidan, vinna en spelomgång av 2048.
           </p>
-          <p>Quisque maximus enim eget metus lacinia, sed ultrices mi.</p>
+          <p>Sen är det bara att gå in i shopen och klicka hem en superhäftig tröja!</p>
         </div>
 
         <div className={`${Styles.innerContentContainer} ${Styles.innerRight}`}>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-            maximus enim eget metus lacinia, sed ultrices mi efficitur.
-            Phasellus tortor elit, semper in placerat vitae, dictum eget arcu.
+            Erbjudandet är för tillfället begränsat till en vara per användare
           </p>
           <p>
-            In vitae placerat massa. Nullam dui ex, commodo sed neque id, ornare
-            suscipit nunc. Curabitur egestas dignissim luctus. Sed aliquet
-            tincidunt quam, euismod ultrices dolor lobortis ut. Vestibulum ante
-            ipsum primis in faucibus orci luctus et ultrices posuere cubilia
-            curae;
+            Vi planerar för att i framtiden öka antalet beställbara produkter, både vad gäller mängden beställningar per användare som mängden tillgängliga produkter i webbshopen.
           </p>
           <StyledButton textInput="Visa Shop" colorInput="#FF7F4A" pathName="shop" />
           <div className={Styles.colorDivider} />

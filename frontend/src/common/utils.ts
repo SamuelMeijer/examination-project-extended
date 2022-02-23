@@ -44,7 +44,7 @@ export function titleDecider(pathname: string): string {
   // Deciding title
   switch (pathname) {
     case "/game":
-      title = "2048: A Math Odyssey";
+      title = "2048";
       break;
     case "/shop":
       title = "Shop";

@@ -11,7 +11,7 @@ import { startNewGame, handleMovement } from "./gameLogic/gameLogic";
 import { useAuthenticatedUser } from "../../hooks/authenticatedUserHook";
 import { useAuthenticatedUserHighscore, useUpdateAuthenticatedUserHighscore } from "../../hooks/authenticatedUserHighscoreHook";
 
-// TODO: Move scoreboard reducer and interface!
+// Component based hooks
 type SCOREBOARD_ACTIONTYPE =
   | { type: "update"; payload: number }
   | { type: "reset" };
@@ -40,7 +40,6 @@ export interface gameStatusInterface {
   message: string
 }
 
-// TODO: Add logic for user being logged in or not
 export default function Game2048() {
   const authenticatedUser = useAuthenticatedUser();
   const authenticatedUserHighscore = useAuthenticatedUserHighscore();
@@ -153,9 +152,9 @@ export default function Game2048() {
     } else {
       // Evalutating if game is not running because the player won or lost and a user is logged in
       if ((gameStatusRef.current.message === 'DU VANN!' && authenticatedUser) || (gameStatusRef.current.message === 'Du förlorade!' && authenticatedUser)) {
-        // User already exists in the highscore -> Update
-        if (authenticatedUserHighscore) {
-          // TODO: Add evaluation if score is better or worse, better -> update highscore
+        // User already exists in the highscore AND the users highscore is less than current score -> Update
+        if (authenticatedUserHighscore && authenticatedUserHighscore.attributes.points < scoreBoard.score) {
+          // Evaluate if player won
           const didPlayerWin = gameStatusRef.current.message === 'DU VANN!'
 
           const reqBody = {
@@ -181,7 +180,7 @@ export default function Game2048() {
             }
           })
           .then((data) => {
-            console.log('Score uppdaterad: ', data.data)
+            // Updating players highscore
             updateAuthenticatedUserHighscore(data.data)
           })
           .catch((err) => {
@@ -216,8 +215,7 @@ export default function Game2048() {
             }
           })
           .then((data) => {
-            // TODO: UPPDATERA PLAYERHIGHSCORE
-            console.log('Score tillagd: ', data.data)
+            // Adding players highscore
             updateAuthenticatedUserHighscore(data.data)
           })
           .catch((err) => {

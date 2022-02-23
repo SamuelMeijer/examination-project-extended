@@ -1,7 +1,7 @@
 .gameContentContainer {
     width: 100%;
     max-width: 1248px;
-    height: 1766px;
+    height: 1966px;
 
     padding: 68px 0;
 
@@ -42,7 +42,7 @@
 .instructionsContainer {
     width: 100%;
     max-width: 517px;
-    height: 288px;
+    height: 488px;
 
     margin: 0 auto;
 }

@@ -28,8 +28,6 @@ export default function Header() {
     marginRight: marginDecider(location),
   };
 
-  // TODO: Add location or bgColorArr as prop to HeaderArt?
-  // TODO: Add correct color for invalid pathnames
   return (
     <section className={Styles.headerContainer}>
       <HeaderArt />

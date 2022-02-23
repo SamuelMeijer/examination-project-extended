@@ -7,7 +7,6 @@ import Game2048 from "../../components/Game2048/Game2048";
 import { useAuthenticatedUser } from "../../hooks/authenticatedUserHook";
 import { useAuthenticatedUserHighscore, highScoreInterface } from '../../hooks/authenticatedUserHighscoreHook'
 
-// TODO: NEED THIS COMPONENT TO REFRESH ONCE HIGHSCORE IS UPDATED FOR USER
 export default function Game() {
   const authenticatedUser = useAuthenticatedUser();
   const authenticatedUserHighscore = useAuthenticatedUserHighscore();
@@ -49,17 +48,19 @@ export default function Game() {
         </div>
 
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-          maximus enim eget metus lacinia, sed ultrices mi efficitur. Phasellus
-          tortor elit, semper in placerat vitae, dictum eget arcu.
+        2048 är ett pusselspel med en spelplan bestående av totalt 16 rutor i mönstret 4x4. <br/> 
+        Vid spelstart blir två slumpmässigt valda rutor tilldelade spelbrickor med värdet två.<br/>
+        Spelaren väljer sedan en riktning med piltangerna<br/> 
+        eller W, A, S, D och alla spelbrickor flyttas så långt åt den riktningen på spelplanen som det går tills de antingen stoppas av spelplanens kant eller en annan spelbricka.
         </p>
 
         <p>
-          In vitae placerat massa. Nullam dui ex, commodo sed neque id, ornare
-          suscipit nunc. Curabitur egestas dignissim luctus. Sed aliquet
-          tincidunt quam, euismod ultrices dolor lobortis ut. Vestibulum ante
-          ipsum primis in faucibus orci luctus et ultrices posuere cubilia
-          curae.
+        Om två spelbrickor med samma värde krockar slås de ihop, värdet av den hopslagna spelbrickan läggs till spelarens poäng.<br/> 
+        En spelbricka kan enbart slås ihop en gång i samma rörelse.<br/>
+        Efter att alla spelbrickor flyttats så långt de kan och eventuella hopslagningar skett genereras en ny spelbricka med värdet två på en tom ruta på spelplanen.<br/>
+        Spelaren får återigen välja en riktning alla spelbrickor ska flyttas. <br/>
+        Om en spelbricka får värdet 2048 har spelaren vunnit.<br/>
+        Om inga tomma rutor finns när en ny bricka kan genereras och inga tillgängliga hopslagningar finns har spelaren förlorat.
         </p>
       </div>
 
