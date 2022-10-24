@@ -5,4 +5,5 @@ In order to run the project:
 2) Navigate into the backend-folder and run npm install
     2.1) Once installed -> npm run develop
     Server will be available on http://localhost:1337
-    
+
+TODO: UPDATE TO FIT NEW PROJECT
