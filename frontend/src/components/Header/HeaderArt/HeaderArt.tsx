@@ -2,6 +2,7 @@ import React, { CSSProperties } from "react";
 import Styles from "./headerArt.module.css";
 import { useLocation } from "react-router-dom";
 import { colorDecider } from "../../../common/utils";
+import Logo from '../../../common/logo'
 
 export default function HeaderArt() {
   // Checking current pathname
@@ -21,7 +22,9 @@ export default function HeaderArt() {
   return (
     <section className={Styles.headerArtContainer}>
       <div className={Styles.rectangleMid} style={midColor} />
-      <div className={Styles.rectangleFront} style={frontColor} />
+      <div className={Styles.rectangleFront} style={frontColor}>
+        <Logo />
+      </div>
     </section>
   );
 }
