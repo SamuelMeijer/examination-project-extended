@@ -10,10 +10,6 @@ export default function HeaderArt() {
   // Dynamic backgroundColor depending on current pathname
   const bgColorArr = colorDecider(location);
 
-  const backColor: CSSProperties = {
-    backgroundColor: bgColorArr[0],
-  };
-
   const midColor: CSSProperties = {
     backgroundColor: bgColorArr[1],
   };
@@ -24,7 +20,6 @@ export default function HeaderArt() {
 
   return (
     <section className={Styles.headerArtContainer}>
-      <div className={Styles.rectangleBack} style={backColor} />
       <div className={Styles.rectangleMid} style={midColor} />
       <div className={Styles.rectangleFront} style={frontColor} />
     </section>
