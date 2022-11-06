@@ -249,7 +249,9 @@ export default function Game2048() {
           <div className={Styles.preGameContainer}> 
             <h3>{gameStatusRef.current.message}</h3>
             <button value={gameStatusRef.current.message === 'Starta ett nytt spel' ? "Spela" : "Spela igen"} onClick={handleOnClick}>
-              {gameStatusRef.current.message === 'Starta ett nytt spel' ? "Spela" : "Spela igen"}
+              <span className={Styles.white}>
+                {gameStatusRef.current.message === 'Starta ett nytt spel' ? "Spela" : "Spela igen"}
+              </span>
             </button>
           </div>
         ) : (
