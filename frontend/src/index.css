@@ -17,7 +17,10 @@ body {
   font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #FDFDFD;
+  background-color: #F98437;
+  background-image: url('./assets/liquid-cheese.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 code {

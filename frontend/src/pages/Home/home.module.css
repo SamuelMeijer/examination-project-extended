@@ -8,12 +8,13 @@
     width: 100%;
     height: 636px;
 
-    /* TODO: REPLACE BG-Color WITH SVG IN BOT*/
     background-color: #FDE2C4;
 
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+
+    filter: drop-shadow(0 0.25rem 0.25rem rgba(0,0,0,0.25));
 }
 
 .contentBoxContainer h2 {
@@ -65,7 +66,7 @@
     width: 100%;
     height: 6px;
 
-    filter: drop-shadow(0 0.25rem 0.25rem rgba(0,0,0,0.25));
+    filter: drop-shadow(0 0.125rem 0.125rem rgba(0,0,0,0.25));
 }
 
 .topContent .colorDivider {
