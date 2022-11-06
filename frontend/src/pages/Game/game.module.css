@@ -6,6 +6,8 @@
     padding: 68px 0;
 
     background-color: #FDE2C4;
+    filter: drop-shadow(0 0.25rem 0.25rem rgba(0,0,0,0.25));
+    
 
     display: flex;
     flex-direction: column;
@@ -13,10 +15,12 @@
 }
 
 .gameContentContainer h2 {
+    width: 100%;
     font-size: 40px;
     font-weight: 700;
-
     color: #4C352F;
+    filter: drop-shadow(0 0.125rem 0.125rem rgba(0,0,0,0.25));
+    text-align: center;
 }
 
 .gameContentContainer p {
@@ -24,19 +28,26 @@
     padding: 0.5rem 0;
     color: #4C352F;
 
+    font-weight: 500;
     text-align: center;
+}
+
+.headingContainer {
+    width: 100%;
+    max-width: 517px;
+    height: 56px;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 .colorDivider {
     width: 100%;
-    max-width: 517px;
-    height: 50px;
+    height: 6px;
 
     background-color: #FFC66C;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    filter: drop-shadow(0 0.125rem 0.125rem rgba(0,0,0,0.25));
 }
 
 .instructionsContainer {

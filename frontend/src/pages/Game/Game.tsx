@@ -43,8 +43,9 @@ export default function Game() {
   return (
     <section className={Styles.gameContentContainer}>
       <div className={Styles.instructionsContainer}>
-        <div className={Styles.colorDivider}>
+        <div className={Styles.headingContainer}>
           <h2>Instruktioner</h2>
+          <div className={Styles.colorDivider} />
         </div>
 
         <p>
@@ -65,8 +66,9 @@ export default function Game() {
       </div>
 
       <div className={Styles.gameContainer}>
-        <div className={Styles.colorDivider}>
+        <div className={Styles.headingContainer}>
           <h2>2048</h2>
+          <div className={Styles.colorDivider} />
         </div>
         <div className={Styles.gameBoardContainer}>
           <Game2048 />
@@ -74,8 +76,9 @@ export default function Game() {
       </div>
 
       <div className={Styles.highscoreListContainer}>
-        <div className={Styles.colorDivider}>
+        <div className={Styles.headingContainer}>
           <h2>Highscore</h2>
+          <div className={Styles.colorDivider} />
         </div>
         <h3 className={Styles.playerHighscoreTitle}>Din bästa omgång</h3>
         {authenticatedUser ? (
