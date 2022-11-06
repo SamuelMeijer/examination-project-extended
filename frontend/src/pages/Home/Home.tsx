@@ -36,7 +36,7 @@ export default function Home() {
             Då har du hittat rätt!<br/> 
             Med ett knapptryck kan du bli en del av gemenskapen!
           </p>
-          <StyledButton textInput="Bli Medlem" colorInput="#F78632" pathName="profile"/>
+          <StyledButton textInput="JOIN US" colorInput="#F78632" pathName="profile"/>
           <div className={Styles.colorDivider} />
         </div>
       </section>
@@ -71,7 +71,7 @@ export default function Home() {
           Om en spelbricka får värdet 2048 har spelaren vunnit.<br/> 
           Om inga tomma rutor finns när en ny bricka kan genereras och inga tillgängliga hopslagningar finns har spelaren förlorat.
           </p>
-          <StyledButton textInput="Spela 2048" colorInput="#FFC66C" pathName="game"/>
+          <StyledButton textInput="PLAY 2048" colorInput="#FFC66C" pathName="game"/>
           <div className={Styles.colorDivider} />
         </div>
       </section>

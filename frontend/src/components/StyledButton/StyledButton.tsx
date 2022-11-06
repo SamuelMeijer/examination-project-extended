@@ -8,20 +8,25 @@ interface ButtonProps {
   pathName?: string;
 }
 
-export default function StyledButton({ textInput, colorInput, pathName }: ButtonProps) {
+export default function StyledButton({
+  textInput,
+  colorInput,
+  pathName,
+}: ButtonProps) {
   const navigate = useNavigate();
 
   const dynamicColor: CSSProperties = {
-    color: colorInput,
+    backgroundColor: colorInput,
   };
 
   const handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     if (pathName) {
-      navigate(`/${pathName}`)
+      navigate(`/${pathName}`);
     }
   };
 
+  // TODO: Add icons
   return (
     <button
       value={textInput}
@@ -29,7 +34,9 @@ export default function StyledButton({ textInput, colorInput, pathName }: Button
       style={dynamicColor}
       onClick={handleOnClick}
     >
-      {textInput}
+      <span className={Styles.white}>
+        {textInput}
+      </span>
     </button>
   );
 }
