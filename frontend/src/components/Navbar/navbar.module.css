@@ -2,8 +2,6 @@
     width: 100%;
     height: 120px;
 
-    background-color: #FDE2C4;
-
     display: flex;
     justify-content: flex-end;
 }
@@ -35,29 +33,24 @@
 }
 
 .navLinkNotActive {
+    color: #4C352F;
     text-decoration: none;
 }
 
 .navLinkIsActive {
+    color: #FDFDFD;
     text-decoration: underline;
 }
 
+/* TODO FIX DYNAMIC */
 .home {
-    background-color: #4C352F;
-    color: #FDE2C4
+    background-color: #F78632;
 }
 
 .game {
     background-color: #FFC66C;
-    color: #4C352F
-}
-
-.shop {
-    background-color: #FF7F4A;
-    color: #4C352F
 }
 
 .profile {
-    background-color: #F78632;
-    color: #4C352F
+    background-color: #FF7F4A;
 }

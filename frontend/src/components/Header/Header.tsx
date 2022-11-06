@@ -15,10 +15,6 @@ export default function Header() {
   // Dynamic backgroundColor depending on current pathname
   let bgColorArr = colorDecider(location);
 
-  if (location === "/home") {
-    bgColorArr = ["#4C352F"];
-  }
-
   const dynamicBackground: CSSProperties = {
     backgroundColor: bgColorArr[0],
   };

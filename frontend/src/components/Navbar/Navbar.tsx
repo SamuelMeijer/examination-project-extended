@@ -2,7 +2,7 @@ import React from "react";
 import Styles from "./navbar.module.css";
 
 import { NavLink } from "react-router-dom";
-import { FaHome, FaGamepad, FaShoppingCart, FaUser } from "react-icons/fa";
+import { FaHome, FaGamepad, FaUser } from "react-icons/fa";
 
 export default function NavBar() {
   return (
@@ -17,7 +17,7 @@ export default function NavBar() {
           }
         >
           <FaHome fontSize="40px" />
-          Hem
+          Home
         </NavLink>
         <NavLink
           to="/game"
@@ -31,17 +31,6 @@ export default function NavBar() {
           2048
         </NavLink>
         <NavLink
-          to="/shop"
-          className={(isActive) =>
-            !isActive.isActive
-              ? `${Styles.shop} ${Styles.navLink} ${Styles.navLinkNotActive}`
-              : `${Styles.shop} ${Styles.navLink} ${Styles.navLinkIsActive}`
-          }
-        >
-          <FaShoppingCart fontSize="40px" />
-          Shop
-        </NavLink>
-        <NavLink
           to="/profile"
           className={(isActive) =>
             !isActive.isActive
@@ -50,7 +39,7 @@ export default function NavBar() {
           }
         >
           <FaUser fontSize="40px" />
-          Profil
+          Profile
         </NavLink>
       </nav>
     </section>

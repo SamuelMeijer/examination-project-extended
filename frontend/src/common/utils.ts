@@ -6,7 +6,7 @@ export function colorDecider(pathname: string): string[] {
     case "/game":
       bgColorArr = ["#FFC66C", "#FF8632", "#FF7F4A"];
       break;
-    case "/shop":
+    case "/profile":
       bgColorArr = ["#FF7F4A", "#FFC66C", "#FF8632"];
       break;
     default:
@@ -22,16 +22,13 @@ export function marginDecider(pathname: string): string {
   // Deciding margin
   switch (pathname) {
     case "/game":
-      margin = "290px";
-      break;
-    case "/shop":
       margin = "160px";
       break;
     case "/profile":
       margin = "30px";
       break;
     default:
-      margin = "420px";
+      margin = "290px";
       break;
   }
 
@@ -46,11 +43,8 @@ export function titleDecider(pathname: string): string {
     case "/game":
       title = "2048";
       break;
-    case "/shop":
-      title = "Shop";
-      break;
     case "/profile":
-      title = "Min Profil";
+      title = "Profile";
       break;
     default:
       title = "Matteklubben";
