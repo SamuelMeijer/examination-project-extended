@@ -8,8 +8,9 @@ export default function Home() {
     <section className={Styles.contentContainer}>
       <section className={`${Styles.contentBoxContainer} ${Styles.topContent}`}>
         <div className={`${Styles.innerContentContainer} ${Styles.innerLeft}`}>
-          <div className={Styles.colorDivider}>
+          <div className={Styles.headingContainer}>
             <h2>Om oss...</h2>
+            <div className={Styles.colorDivider} />
           </div>
           <p>
           Matteklubben är en intresseförening för personer med ett brinnande intresse för matematik och logisk problemlösning.<br/> 
@@ -40,10 +41,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={`${Styles.contentBoxContainer} ${Styles.midContent}`}>
+      <section className={`${Styles.contentBoxContainer} ${Styles.botContent}`}>
         <div className={`${Styles.innerContentContainer} ${Styles.innerLeft}`}>
-          <div className={Styles.colorDivider}>
+        <div className={Styles.headingContainer}>
             <h2>2048</h2>
+            <div className={Styles.colorDivider} />
           </div>
           <p>
             Här kan du spela våra medlemmars favoritspel, 2048!
@@ -70,35 +72,6 @@ export default function Home() {
           Om inga tomma rutor finns när en ny bricka kan genereras och inga tillgängliga hopslagningar finns har spelaren förlorat.
           </p>
           <StyledButton textInput="Spela 2048" colorInput="#FFC66C" pathName="game"/>
-          <div className={Styles.colorDivider} />
-        </div>
-      </section>
-
-      <section className={`${Styles.contentBoxContainer} ${Styles.botContent}`}>
-        <div className={`${Styles.innerContentContainer} ${Styles.innerLeft}`}>
-          <div className={Styles.colorDivider}>
-            <h2>Webbshop</h2>
-          </div>
-          <p>
-            Missa inte chansen!
-          </p>
-          <p>
-            Under en begränsad tidsperiod kommer Matteklubben erbjuda sina skickligaste medlemmar möjliheten att beställa häftiga kläder.
-          </p>
-          <p>
-            Allt du behöver göra är att registrera dig på hemsidan, vinna en spelomgång av 2048.
-          </p>
-          <p>Sen är det bara att gå in i shopen och klicka hem en superhäftig tröja!</p>
-        </div>
-
-        <div className={`${Styles.innerContentContainer} ${Styles.innerRight}`}>
-          <p>
-            Erbjudandet är för tillfället begränsat till en vara per användare
-          </p>
-          <p>
-            Vi planerar för att i framtiden öka antalet beställbara produkter, både vad gäller mängden beställningar per användare som mängden tillgängliga produkter i webbshopen.
-          </p>
-          <StyledButton textInput="Visa Shop" colorInput="#FF7F4A" pathName="shop" />
           <div className={Styles.colorDivider} />
         </div>
       </section>

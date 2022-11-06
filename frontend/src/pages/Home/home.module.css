@@ -8,6 +8,7 @@
     width: 100%;
     height: 636px;
 
+    /* TODO: REPLACE BG-Color WITH SVG IN BOT*/
     background-color: #FDE2C4;
 
     display: flex;
@@ -16,15 +17,18 @@
 }
 
 .contentBoxContainer h2 {
+    width: 100%;
     font-size: 40px;
     font-weight: 700;
     color: #4C352F;
+    filter: drop-shadow(0 0.125rem 0.125rem rgba(0,0,0,0.25));
 }
 
 .contentBoxContainer p {
     font-size: 1rem;
     padding: 0.5rem 0;
     color: #4C352F;
+    font-weight: 500;
 }
 
 .innerContentContainer {
@@ -44,26 +48,30 @@
     padding-top: 50px;
 }
 
-.midContent {
-    margin: 1.5rem 0;
+.botContent {
+    margin-top: 1.5rem;
+}
+
+.headingContainer {
+    width: 100%;
+    height: 56px;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 .colorDivider {
     width: 100%;
-    height: 50px;
+    height: 6px;
 
-    display: flex;
-    align-items: center;
+    filter: drop-shadow(0 0.25rem 0.25rem rgba(0,0,0,0.25));
 }
 
 .topContent .colorDivider {
     background-color: #F78632;
 }
 
-.midContent .colorDivider {
-    background-color: #FFC66C;
-}
-
 .botContent .colorDivider {
-    background-color: #FF7F4A;
+    background-color: #FFC66C;
 }
