@@ -52,16 +52,23 @@
     cursor: pointer;
 }
 
-.colorDivider {
+.headingContainer {
     width: 100%;
-    max-width: 517px;
-    height: 50px;
-
-    background-color: #F78632;
+    height: 56px;
 
     display: flex;
     align-items: center;
-    justify-content: center;
+    flex-direction: column;
+}
+
+.colorDivider {
+    width: 100%;
+    max-width: 517px;
+    height: 6px;
+
+    filter: drop-shadow(0 0.125rem 0.125rem rgba(0,0,0,0.25));
+    
+    background-color: #FF7F4A;
 }
 
 .userInformationContainer {

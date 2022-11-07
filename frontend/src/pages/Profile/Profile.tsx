@@ -280,8 +280,9 @@ export default function Profile() {
       {authenticatedUser ? (
         <div>
           <div className={Styles.userInformationContainer}>
-            <div className={Styles.colorDivider}>
+            <div className={Styles.headingContainer}>
               <h2>{authenticatedUser.user.username}</h2>
+              <div className={Styles.colorDivider} />
             </div>
 
             <div className={Styles.userInformationContent}>
@@ -322,8 +323,9 @@ export default function Profile() {
           </div>
 
           <div className={Styles.supportContainer}>
-            <div className={Styles.colorDivider}>
+            <div className={Styles.headingContainer}>
               <h2>Support</h2>
+              <div className={Styles.colorDivider} />
             </div>
             <div className={Styles.changePasswordContainer}>
               <h3>Vill du ändra lösenord?</h3>
@@ -358,8 +360,9 @@ export default function Profile() {
       ) : (
         <div>
           <div className={Styles.userInformationContainer}>
-            <div className={Styles.colorDivider}>
+            <div className={Styles.headingContainer}>
               <h2>Logga in</h2>
+              <div className={Styles.colorDivider} />
             </div>
 
             <div className={Styles.userLoginContainer}>
@@ -391,8 +394,9 @@ export default function Profile() {
           </div>
 
           <div className={Styles.supportContainer}>
-            <div className={Styles.colorDivider}>
+            <div className={Styles.headingContainer}>
               <h2>Registrera dig</h2>
+              <div className={Styles.colorDivider} />
             </div>
             <div className={Styles.changePasswordContainer}>
               <h3 className={Styles.changePasswordTitle}>Inte medlem? Registrerar dig här</h3>
