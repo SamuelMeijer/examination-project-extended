@@ -25,6 +25,7 @@
 
 .profileContentContainer p {
     font-size: 1rem;
+    font-weight: 500;
     padding: 0.5rem 0;
     color: #4C352F;
 }
@@ -175,6 +176,7 @@ form {
 }
 
 form label {
+    font-weight: 500;
     width: auto;
     height: 20px;
 }
