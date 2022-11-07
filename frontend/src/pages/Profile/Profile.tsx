@@ -352,7 +352,11 @@ export default function Profile() {
                   type="password"
                   onChange={handleNewPasswordFormChange}
                 />
-                <button type="submit">Ändra lösenord</button>
+                <button type="submit">
+                  <span className={Styles.white}>
+                    Ändra lösenord
+                  </span>
+                </button>
               </form>
             </div>
           </div>
@@ -387,7 +391,11 @@ export default function Profile() {
                     type="password"
                     onChange={handleLoginFormChange}
                   />
-                  <button type="submit">Logga in</button>
+                  <button type="submit">
+                  <span className={Styles.white}>
+                      Logga in
+                    </span>
+                  </button>
                 </form>
               </div>
             </div>
@@ -437,7 +445,11 @@ export default function Profile() {
                   type="password"
                   onChange={handleRegisterFormChange}
                 />
-                <button type="submit">Registrera dig</button>
+                <button type="submit">
+                  <span className={Styles.white}>
+                    Registrera dig
+                  </span>
+                </button>
               </form>
             </div>
           </div>

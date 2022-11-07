@@ -32,12 +32,12 @@
 /* Same styling as Styledbutton-component */
 .profileContentContainer button {
     width: 300px;
-    height: 100px;
+    height: 80px;
     
-    border-radius: 20px;
+    border-radius: 40px;
 
-    background-color: #4C352F;
-    color: #F78632;
+    color: #4C352F;
+    background-color: #FF7F4A;
 
     font-family: 'Montserrat', sans-serif;
     font-size: 2rem;
@@ -50,6 +50,20 @@
     align-self: center;
 
     cursor: pointer;
+}
+
+.profileContentContainer button .white {
+    width: 280px;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 40px;
+    background-color: #fdfdfd;
+
+    filter: drop-shadow(0 0.125rem 0.125rem rgba(0,0,0,0.25));
 }
 
 .headingContainer {
