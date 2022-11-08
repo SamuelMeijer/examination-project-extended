@@ -6,6 +6,7 @@ import Styles from './tile.module.css'
 export default function Tile ({value, positionX, positionY, hasMerged}: TileInterface) {
     const [scale, setScale] = useState<number>(1);
 
+    // TODO: Change colors to be more diverse
     let dynamicBackgroundColor = ''
     switch (value) {
         case 2:
@@ -54,8 +55,12 @@ export default function Tile ({value, positionX, positionY, hasMerged}: TileInte
     const tileStyle: CSSProperties = {
         top: `${dynamicPositioning(positionY)}px`,
         left: `${dynamicPositioning(positionX)}px`,
-        backgroundColor: `${dynamicBackgroundColor}`,
+        border: `6px solid ${dynamicBackgroundColor}`,
         transform: `scale(${scale})`
+    }
+
+    const textStyle: CSSProperties = {
+        borderBottom: `6px solid ${dynamicBackgroundColor}`
     }
 
     useEffect(() => {
@@ -68,7 +73,7 @@ export default function Tile ({value, positionX, positionY, hasMerged}: TileInte
 
     return (
         <div className={Styles.tile} style={tileStyle}>
-            <p>{value > 0 ? value : ''}</p>
+            <p style={textStyle}>{value > 0 ? value : ''}</p>
         </div>
     )
 }
