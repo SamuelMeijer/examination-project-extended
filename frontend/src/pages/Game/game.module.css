@@ -3,7 +3,7 @@
     min-height: 1966px;
     
     margin: 0 auto;
-    padding: 68px 0;
+    padding: 2rem;
 
     background-color: #FDE2C4;
     filter: drop-shadow(0 0.25rem 0.25rem rgba(0,0,0,0.25));
@@ -61,7 +61,6 @@
 .gameContainer {
     width: 100%;
     max-width: 580px;
-    height: 758px;
 
     margin: 0 auto;
 

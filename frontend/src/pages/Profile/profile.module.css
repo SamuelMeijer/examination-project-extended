@@ -1,10 +1,8 @@
 .profileContentContainer {
     width: 90%;
-    /* max-width: 1248px; */
-    min-height: 903px;
 
     margin: 0 auto;
-    padding: 68px 0;
+    padding: 2rem;
 
     background-color: #FDE2C4;
 
@@ -33,9 +31,10 @@
 
 /* Same styling as Styledbutton-component */
 .profileContentContainer button {
-    width: 300px;
+    width: 100%;
     height: 80px;
     
+    padding: 0.625rem;    
     border-radius: 40px;
 
     color: #4C352F;
@@ -55,8 +54,8 @@
 }
 
 .profileContentContainer button .white {
-    width: 280px;
-    height: 60px;
+    width: 100%;
+    height: 100%;
 
     display: flex;
     align-items: center;
@@ -96,10 +95,10 @@
 }
 
 .userLoginContainer {
-        width: 100%;
-        height: 290px;
-    
-        padding: 0.5rem 0;
+    width: 100%;
+    height: 290px;
+
+    padding: 0.5rem 0;
 }
 
 .userLoginInformation {
@@ -173,6 +172,7 @@ form {
 
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -188,4 +188,11 @@ form input {
     border: 1px solid #4C352F;
 
     margin-bottom: 0.5rem;
+}
+
+@media screen and (min-width: 420px) {
+    .profileContentContainer button {
+        max-width: 300px;
+        height: 80px;
+    }
 }
